@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import { Heading, Link } from '@chakra-ui/react'
+import { Routes, Route, Link as RouterLink } from 'react-router-dom'
 
 export function RootRoutes() {
   return (
@@ -6,22 +7,28 @@ export function RootRoutes() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Splash Screen</Link>
+            <Link as={RouterLink} to="/">
+              Splash Screen
+            </Link>
           </li>
           <li>
-            <Link to="/login">Login</Link>
+            <Link as={RouterLink} to="/login">
+              Login
+            </Link>
           </li>
           <li>
-            <Link to="/home">Home</Link>
+            <Link as={RouterLink} to="/home">
+              Home
+            </Link>
           </li>
         </ul>
       </nav>
 
       <Routes>
-        <Route path="/login" element={<h1>Login</h1>} />
-        <Route path="/home" element={<h1>Home</h1>} />
-        <Route path="/" element={<h1>Splash Screen</h1>} />
-        <Route path="*" element={<h1>Not found</h1>} />
+        <Route path="/login" element={<Heading>Login</Heading>} />
+        <Route path="/home" element={<Heading>Home</Heading>} />
+        <Route path="/" element={<Heading>Splash Screen</Heading>} />
+        <Route path="*" element={<Heading>Not found</Heading>} />
       </Routes>
     </div>
   )

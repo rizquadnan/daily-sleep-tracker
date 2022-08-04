@@ -1,10 +1,13 @@
+import { Button, ChakraProvider } from '@chakra-ui/react'
 import { BrowserRouter } from 'react-router-dom'
 import { RootRoutes } from './routes'
 
 function App() {
   return (
     <BrowserRouter>
-      <RootRoutes />
+      <ChakraProvider>
+        <RootRoutes />
+      </ChakraProvider>
     </BrowserRouter>
   )
 }
