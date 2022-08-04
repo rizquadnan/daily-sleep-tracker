@@ -1,8 +1,11 @@
+import { BrowserRouter } from 'react-router-dom'
+import { RootRoutes } from './routes'
+
 function App() {
   return (
-    <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-      Learn React
-    </a>
+    <BrowserRouter>
+      <RootRoutes />
+    </BrowserRouter>
   )
 }
 

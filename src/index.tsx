@@ -8,3 +8,7 @@ root.render(
     <App />
   </React.StrictMode>,
 )
+
+// 1. setup routing
+// 2. setup chakra ui
+// 3. setup axios
