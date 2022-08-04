@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, BrowserRouter } from 'react-router-dom'
 import App from '../App'
+import { ROUTES } from './constant'
 import { RootRoutes } from './RootRoutes'
 
 describe('<RootRoutes />', () => {
@@ -10,6 +11,19 @@ describe('<RootRoutes />', () => {
       name: 'Splash Screen',
     })
     expect(defaultPageHeading).toBeInTheDocument()
+  })
+
+  it('renders register page properly', () => {
+    render(
+      <MemoryRouter initialEntries={[ROUTES.register]}>
+        <RootRoutes />
+      </MemoryRouter>,
+    )
+
+    const pageHeading = screen.getByRole('heading', {
+      name: 'Register',
+    })
+    expect(pageHeading).toBeInTheDocument()
   })
 
   it('renders not found page when detects a unidentified route', () => {
