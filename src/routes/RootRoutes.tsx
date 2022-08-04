@@ -1,6 +1,6 @@
 import { Heading, Link } from '@chakra-ui/react'
 import { Routes, Route, Link as RouterLink } from 'react-router-dom'
-import { Register } from '../pages'
+import { Register } from 'pages'
 import { ROUTES } from './constant'
 
 export function RootRoutes() {
@@ -16,6 +16,11 @@ export function RootRoutes() {
           <li>
             <Link as={RouterLink} to="/login">
               Login
+            </Link>
+          </li>
+          <li>
+            <Link as={RouterLink} to={ROUTES.register}>
+              Register
             </Link>
           </li>
           <li>

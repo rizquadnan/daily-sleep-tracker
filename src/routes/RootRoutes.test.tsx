@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, BrowserRouter } from 'react-router-dom'
-import App from '../App'
 import { ROUTES } from './constant'
 import { RootRoutes } from './RootRoutes'
 
