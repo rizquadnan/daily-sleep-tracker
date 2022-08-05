@@ -1,10 +1,4 @@
-import {
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  VStack,
-} from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, VStack } from '@chakra-ui/react'
 
 export function RegisterForm() {
   return (

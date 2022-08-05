@@ -1,13 +1,4 @@
-import {
-  Box,
-  Center,
-  Container,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  VStack,
-} from '@chakra-ui/react'
+import { Center, Container, Heading, VStack } from '@chakra-ui/react'
 import { pxToRem } from 'utils'
 import RegisterForm from './RegisterForm'
 
