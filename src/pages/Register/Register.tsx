@@ -17,7 +17,7 @@ export function Register() {
           <Heading as="h1" textAlign="center">
             Register
           </Heading>
-          <RegisterForm />
+          <RegisterForm onSubmit={() => ''} />
         </VStack>
       </Center>
     </Container>

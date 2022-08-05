@@ -1,8 +1,20 @@
 import { FormControl, FormLabel, Input, VStack } from '@chakra-ui/react'
 
-export function RegisterForm() {
+type RegisterFormProps = {
+  onSubmit: () => void
+}
+
+export function RegisterForm(props: RegisterFormProps) {
   return (
-    <VStack spacing="8" as="form">
+    <VStack
+      spacing="8"
+      as="form"
+      onSubmit={(e) => {
+        e.preventDefault()
+
+        props.onSubmit()
+      }}
+    >
       <VStack alignItems="stretch" spacing="6" w="100%">
         <FormControl isRequired>
           <FormLabel>Name</FormLabel>
@@ -14,7 +26,7 @@ export function RegisterForm() {
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Password</FormLabel>
-          <Input type="password" />
+          <Input type="password" role="textbox" />
         </FormControl>
       </VStack>
       <Input type="submit" />
