@@ -1,5 +1,14 @@
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter, BrowserRouter } from 'react-router-dom'
+import {
+  render,
+  screen,
+  ByRoleMatcher,
+  ByRoleOptions,
+} from '@testing-library/react'
+import {
+  MemoryRouter,
+  BrowserRouter,
+  MemoryRouterProps,
+} from 'react-router-dom'
 import { ROUTES } from './constant'
 import { RootRoutes } from './RootRoutes'
 
@@ -12,17 +21,35 @@ describe('<RootRoutes />', () => {
     expect(defaultPageHeading).toBeInTheDocument()
   })
 
-  it('renders register page properly', () => {
-    render(
-      <MemoryRouter initialEntries={[ROUTES.register]}>
-        <RootRoutes />
-      </MemoryRouter>,
-    )
+  describe('renders pages', () => {
+    const setup = (
+      route: MemoryRouterProps['initialEntries'],
+      role: ByRoleMatcher,
+      options?: ByRoleOptions,
+    ) => {
+      render(
+        <MemoryRouter initialEntries={route}>
+          <RootRoutes />
+        </MemoryRouter>,
+      )
 
-    const pageHeading = screen.getByRole('heading', {
-      name: 'Register',
+      return screen.getByRole(role, options)
+    }
+    it('renders register page properly', () => {
+      const pageHeading = setup([ROUTES.register], 'heading', {
+        name: 'Register',
+      })
+
+      expect(pageHeading).toBeInTheDocument()
     })
-    expect(pageHeading).toBeInTheDocument()
+
+    it('renders home page properly', () => {
+      const pageHeading = setup([ROUTES.home], 'heading', {
+        name: 'Home',
+      })
+
+      expect(pageHeading).toBeInTheDocument()
+    })
   })
 
   it('renders not found page when detects a unidentified route', () => {
