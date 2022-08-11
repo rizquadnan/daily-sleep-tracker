@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "resize-observer-polyfill": "^1.5.1",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"
   },
@@ -44,6 +45,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!d3-time-format|d3-time|d3-array|internmap)"
     ]
   }
 }
