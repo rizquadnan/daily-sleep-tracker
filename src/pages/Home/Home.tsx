@@ -9,11 +9,21 @@ import {
 import React from 'react'
 import { AxisLinearOptions, Chart } from 'react-charts'
 
-import mock from './mock.json'
+import { mock } from './mock'
+import Table from './Table'
+
+type Column = ['date', 'sleepStart', 'sleepEnd', 'totalDuration']
+type Row = {
+  key: string
+  date: string
+  sleepStart: string
+  sleepEnd: string
+  totalDuration: string
+}
 
 export function Home() {
   const primaryAxis = React.useMemo<
-    AxisLinearOptions<typeof mock[number]['data'][number]>
+    AxisLinearOptions<typeof mock['chart'][number]['data'][number]>
   >(
     () => ({
       getValue: (datum) => Number(datum.primary),
@@ -21,7 +31,7 @@ export function Home() {
     [],
   )
   const secondaryAxes = React.useMemo<
-    AxisLinearOptions<typeof mock[number]['data'][number]>[]
+    AxisLinearOptions<typeof mock['chart'][number]['data'][number]>[]
   >(
     () => [
       {
@@ -42,14 +52,19 @@ export function Home() {
           <Box flex="1" minH="300px" minW="300px">
             <Chart
               options={{
-                data: mock,
+                data: mock.chart,
                 primaryAxis,
                 secondaryAxes,
                 tooltip: false,
               }}
             />
           </Box>
-          <Box flex="1">Table</Box>
+          <Box flex="1">
+            <Table<Column, Array<Row>>
+              columns={mock.table.columns}
+              rows={mock.table.rows}
+            />
+          </Box>
         </Stack>
         <Button w="100%" colorScheme="orange">
           New Entry
