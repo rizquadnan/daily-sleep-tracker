@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import { mock, MockColumns, MockRow } from './mock'
+import { ReactElement } from 'react'
+import { mock } from './mock'
 import { Table } from './Table'
+import { Column, Row } from './tableEntity'
 
 describe('<Table />', () => {
-  render(<Table<MockColumns, Array<MockRow>> {...mock.table} />)
+  render(<Table<Column, Array<Row>> {...mock.table} />)
   it('renders without crashing', () => {
     expect(screen.getByRole('table')).toBeInTheDocument()
   })
@@ -31,6 +33,39 @@ describe('<Table />', () => {
       mock.table.rows.forEach((row, index) => {
         expect(tableRows[index].childNodes[0].textContent).toBe(row.date)
       })
+    })
+
+    test('render each row that has its cell in correct order', () => {
+      mock.table.rows.forEach((row, rowIndex) => {
+        mock.table.columns.forEach((column, columnIndex) => {
+          const isTextTypeCell =
+            tableRows[rowIndex].childNodes[columnIndex].childNodes[0]
+              .nodeName === '#text'
+
+          if (!isTextTypeCell) {
+            return
+          }
+          expect(tableRows[rowIndex].childNodes[columnIndex].textContent).toBe(
+            row[column],
+          )
+        })
+      })
+    })
+
+    test('render a custom cell', () => {
+      render(
+        <Table<['custom'], Array<{ key: string; custom: ReactElement }>>
+          columns={['custom']}
+          rows={[
+            {
+              key: '1',
+              custom: <button>Custom</button>,
+            },
+          ]}
+        />,
+      )
+
+      expect(screen.getByRole("button", { name: "Custom" })).toBeInTheDocument();
     })
   })
 })

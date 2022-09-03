@@ -7,15 +7,21 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import { ReactElement } from 'react'
 
 export type TableProps<Columns, Rows> = {
   rows: Rows
   columns: Columns
 }
 
+type ColumnValues<T> = T extends 'key'
+  ? string : T extends string ? string | ReactElement : never;
+
+type RowValues<ColumnsKeys extends string> = { [ K in ColumnsKeys]: ColumnValues<K>};
+
 export function Table<
   Columns extends string[],
-  Rows extends Array<Record<Columns[number] | 'key', string>>
+  Rows extends Array<RowValues<'key' | Columns[number]>>
 >(props: TableProps<Columns, Rows>) {
   return (
     <TableContainer>
@@ -30,9 +36,9 @@ export function Table<
         <Tbody>
           {props.rows.map((row, rowIndex) => (
             <Tr key={row.key}>
-              {props.columns.map((key, columnIndex) => (
-                <Td key={`tbody-row${rowIndex}-column${columnIndex}-${key}`}>
-                  {row[key as Columns[number]]}
+              {props.columns.map((column, columnIndex) => (
+                <Td key={`tbody-row${rowIndex}-column${columnIndex}-${column}`}>
+                  {row[column as Columns[number]]}
                 </Td>
               ))}
             </Tr>

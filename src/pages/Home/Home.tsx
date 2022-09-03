@@ -11,15 +11,7 @@ import { AxisLinearOptions, Chart } from 'react-charts'
 
 import { mock } from './mock'
 import Table from './Table'
-
-type Column = ['date', 'sleepStart', 'sleepEnd', 'totalDuration']
-type Row = {
-  key: string
-  date: string
-  sleepStart: string
-  sleepEnd: string
-  totalDuration: string
-}
+import { Column, Row } from './tableEntity'
 
 export function Home() {
   const primaryAxis = React.useMemo<
@@ -41,7 +33,7 @@ export function Home() {
     [],
   )
   return (
-    <Container maxW="container.lg">
+    <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
         <Heading textAlign="center">Home</Heading>
         <Stack
