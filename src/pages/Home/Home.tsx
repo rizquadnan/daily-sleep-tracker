@@ -9,9 +9,8 @@ import {
 import React from 'react'
 import { AxisLinearOptions, Chart } from 'react-charts'
 
-import { mock } from './mock'
-import Table from './Table'
-import { Column, Row } from './tableEntity'
+import { mock } from './components/Table/mock'
+import { Table, Column, Row } from './components/Table'
 
 export function Home() {
   const primaryAxis = React.useMemo<
