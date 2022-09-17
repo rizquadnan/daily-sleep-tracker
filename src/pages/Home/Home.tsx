@@ -4,6 +4,7 @@ import {
   Container,
   Heading,
   Stack,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react'
 import React from 'react'
@@ -11,6 +12,8 @@ import { AxisLinearOptions, Chart } from 'react-charts'
 
 import { mock } from './components/Table/mock'
 import { Table, Column, Row } from './components/Table'
+import { Modal } from './components/Modal'
+import { HomeForm } from './components/HomeForm'
 
 export function Home() {
   const primaryAxis = React.useMemo<
@@ -31,6 +34,8 @@ export function Home() {
     ],
     [],
   )
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
@@ -57,10 +62,15 @@ export function Home() {
             />
           </Box>
         </Stack>
-        <Button w="100%" colorScheme="orange">
+        <Button w="100%" colorScheme="orange" onClick={() => onOpen()}>
           New Entry
         </Button>
       </VStack>
+      <Modal isOpen={isOpen} onClose={onClose} title="Add Sleep Data">
+        <Box paddingBottom="24px">
+          <HomeForm onSubmit={() => alert('submit')} />
+        </Box>
+      </Modal>
     </Container>
   )
 }

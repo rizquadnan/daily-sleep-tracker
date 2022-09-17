@@ -5,8 +5,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalCloseButton,
-  ModalFooter,
-  Button,
 } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
@@ -27,12 +25,6 @@ export function Modal(props: ModalProps) {
           <ModalBody>
             {props.children}
           </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={props.onClose}>
-              Close
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </ModalBody>
     </ChakraModal>

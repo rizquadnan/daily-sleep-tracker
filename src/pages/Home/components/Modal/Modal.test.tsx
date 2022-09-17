@@ -63,29 +63,16 @@ describe('<Modal />', () => {
     expect(screen.getByLabelText('title')).toBeInTheDocument()
   })
 
-  describe('closes when the close trigger (inside the modal) is clicked', () => {
-    test.each([
-      { type: 'label', value: 'Close' },
-      { type: 'label-text', value: 'Close' },
-    ])('test case', async ({ type, value }) => {
-      const user = userEvent.setup()
-      const { container } = render(<Demo initialIsOpen />)
+  test('closes when the close trigger (inside the modal) is clicked', async () => {
+    const user = userEvent.setup()
+    render(<Demo initialIsOpen />)
 
-      const getCloseTrigger = () => {
-        switch (type) {
-          case 'label':
-            return screen.getByText(value) as Element
-          default:
-            return screen.getByLabelText(value) as Element
-        }
-      }
-      await user.click(getCloseTrigger())
+    await user.click(screen.getByLabelText('Close'))
 
-      await waitFor(() => {
-        expect(
-          screen.queryByRole('heading', { name: 'Children' }),
-        ).not.toBeInTheDocument()
-      })
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('heading', { name: 'Children' }),
+      ).not.toBeInTheDocument()
     })
   })
 })
