@@ -45,7 +45,7 @@ export function Home() {
           alignItems={{ base: 'stretch', lg: 'center' }}
           justifyContent="stretch"
         >
-          <Box flex="1" minH="300px" minW="300px">
+          <Box flex="1" minH="300px" minW="300px" data-testid="chart">
             <Chart
               options={{
                 data: mock.chart,
