@@ -1,4 +1,9 @@
-import { screen, render, fireEvent } from '@testing-library/react'
+import {
+  screen,
+  render,
+  fireEvent,
+  getAllByDisplayValue,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   SLEEP_END,
@@ -14,6 +19,7 @@ import HomeForm, { HomeFormProps } from './HomeForm'
 describe('<HomeForm />', () => {
   const mockOnSubmit = jest.fn()
   const defaultProps: HomeFormProps = {
+    variant: 'create',
     onSubmit: mockOnSubmit,
   }
 
@@ -148,6 +154,37 @@ describe('<HomeForm />', () => {
         sleepEnd: endValue,
         totalSleep: '07:04',
       })
+    })
+  })
+
+  describe('edit variant', () => {
+    test('supports initialValues', () => {
+      const sleepStart = '2022-09-16T22:17'
+      const sleepEnd = '2022-09-17T05:21'
+      const totalSleep = '07:04'
+      render(
+        <HomeForm
+          {...{
+            ...defaultProps,
+            variant: 'edit',
+            initialValues: {
+              sleepStart,
+              sleepEnd,
+              totalSleep,
+            },
+          }}
+        />,
+      )
+
+      expect(
+        screen.getByTestId(SLEEP_START_INPUT) as HTMLInputElement,
+      ).toHaveValue(sleepStart)
+
+      expect(
+        screen.getByTestId(SLEEP_END_INPUT) as HTMLInputElement,
+      ).toHaveValue(sleepEnd)
+
+      expect(screen.getByText(`Total sleep: ${totalSleep}`)).toBeInTheDocument()
     })
   })
 })

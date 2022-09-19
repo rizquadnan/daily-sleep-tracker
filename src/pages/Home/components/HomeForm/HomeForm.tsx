@@ -19,7 +19,7 @@ import {
   SUBMIT_INPUT,
 } from '.'
 
-export type HomeFormProps = {
+type HomeFormBaseProps = {
   onSubmit: (submitValue: {
     sleepStart: string
     sleepEnd: string
@@ -27,14 +27,36 @@ export type HomeFormProps = {
   }) => void
 }
 
+type HomeFormEditProps = {
+  variant: 'edit'
+  initialValues: {
+    sleepStart: string
+    sleepEnd: string
+    totalSleep: string
+  }
+}
+
+type HomeFormCreateProps = {
+  variant: 'create'
+}
+
+export type HomeFormProps = (HomeFormEditProps | HomeFormCreateProps) &
+  HomeFormBaseProps
+
 export function HomeForm(props: HomeFormProps) {
-  const [sleepStart, setSleepStart] = useState<string | undefined>()
+  const [sleepStart, setSleepStart] = useState<string | undefined>(
+    props.variant === 'edit' ? props.initialValues.sleepStart : undefined,
+  )
   const [sleepStartError, setSleepStartError] = useState<string | null>(null)
 
-  const [sleepEnd, setSleepEnd] = useState<string | undefined>()
+  const [sleepEnd, setSleepEnd] = useState<string | undefined>(
+    props.variant === 'edit' ? props.initialValues.sleepEnd : undefined,
+  )
   const [sleepEndError, setSleepEndError] = useState<string | null>(null)
 
-  const [totalSleep, setTotalSleep] = useState<string | undefined>()
+  const [totalSleep, setTotalSleep] = useState<string | undefined>(
+    props.variant === 'edit' ? props.initialValues.totalSleep : undefined,
+  )
 
   const hasAnyError = Boolean(sleepStartError || sleepEndError)
   const isEmptyForm = Boolean(!sleepStart && !sleepEnd)
