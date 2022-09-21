@@ -1,9 +1,12 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Container,
   Heading,
+  HStack,
   Stack,
+  Text,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
@@ -20,6 +23,7 @@ import {
 } from './components/Table'
 import { Modal } from './components/Modal'
 import { HomeForm } from './components/HomeForm'
+import DeleteConfirmation from './components/DeleteConfirmation/DeleteConfirmation'
 
 export function Home() {
   const [formEditInitialValues, setFormEditInitialValues] = useState<
@@ -49,7 +53,16 @@ export function Home() {
     ],
     [],
   )
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isFormModalOpen,
+    onOpen: onOpenFormModal,
+    onClose: onCloseFormModal,
+  } = useDisclosure()
+  const {
+    isOpen: isDeleteModalOpen,
+    onOpen: onOpenDeleteModal,
+    onClose: onCloseDeleteModal,
+  } = useDisclosure()
 
   const onEdit = () => {
     setFormEditInitialValues({
@@ -58,11 +71,15 @@ export function Home() {
       totalSleep: '07:04',
     })
 
-    onOpen()
+    onOpenFormModal()
+  }
+
+  const onDelete = () => {
+    onOpenDeleteModal()
   }
 
   const renderTableActions = () => (
-    <TableActions onEdit={onEdit} onDelete={() => alert('Delete')} />
+    <TableActions onEdit={onEdit} onDelete={onDelete} />
   )
   const table: TableProps<Column, Array<Row>> = {
     columns: ['date', 'sleepStart', 'sleepEnd', 'totalDuration', 'actions'],
@@ -120,13 +137,13 @@ export function Home() {
             />
           </Box>
         </Stack>
-        <Button w="100%" colorScheme="orange" onClick={() => onOpen()}>
+        <Button w="100%" colorScheme="orange" onClick={() => onOpenFormModal()}>
           New Entry
         </Button>
       </VStack>
       <Modal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isFormModalOpen}
+        onClose={onCloseFormModal}
         title={formEditInitialValues ? 'Edit Sleep Data' : 'Add Sleep Data'}
       >
         <Box paddingBottom="24px">
@@ -138,6 +155,18 @@ export function Home() {
                   onSubmit: () => alert('submit'),
                 }
               : { variant: 'create', onSubmit: () => alert('submit') })}
+          />
+        </Box>
+      </Modal>
+      <Modal
+        isOpen={isDeleteModalOpen}
+        onClose={onCloseDeleteModal}
+        title="Delete Sleep Data"
+      >
+        <Box data-testid="delete-modal-content">
+          <DeleteConfirmation
+            onClickNo={onCloseDeleteModal}
+            onClickYes={() => alert('Delete')}
           />
         </Box>
       </Modal>
