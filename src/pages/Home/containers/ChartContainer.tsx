@@ -2,7 +2,7 @@ import React from 'react'
 import { AxisLinearOptions, Chart } from 'react-charts'
 import { mock } from '../components'
 
-function ChartContainer() {
+export function ChartContainer() {
   const primaryAxis = React.useMemo<
     AxisLinearOptions<typeof mock['chart'][number]['data'][number]>
   >(
