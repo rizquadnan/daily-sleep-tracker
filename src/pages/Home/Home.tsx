@@ -4,6 +4,11 @@ import {
   Container,
   Heading,
   Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react'
@@ -21,22 +26,50 @@ export function Home() {
     <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
         <Heading textAlign="center">Home</Heading>
-        <Stack
-          flexDirection={{ base: 'column', lg: 'row' }}
-          alignItems={{ base: 'stretch', lg: 'center' }}
-          justifyContent="stretch"
-        >
-          <Box flex="1" minH="300px" minW="300px" data-testid="chart">
-            <ChartContainer />
-          </Box>
-          <Box flex="1">
-            <TableContainer />
-          </Box>
-        </Stack>
+
+        <Tabs isFitted isLazy>
+          <TabList>
+            <Tab>Chart</Tab>
+            <Tab>Table</Tab>
+            <Tab>Side by side</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <Box minH="300px" minW="300px" data-testid="chart-singular">
+                <ChartContainer />
+              </Box>
+            </TabPanel>
+            <TabPanel>
+              <TableContainer />
+            </TabPanel>
+            <TabPanel>
+              <Stack
+                flexDirection={{ base: 'column', lg: 'row' }}
+                alignItems={{ base: 'stretch', lg: 'center' }}
+                justifyContent="stretch"
+              >
+                <Box
+                  flex="1"
+                  minH="300px"
+                  minW="300px"
+                  data-testid="chart-side-by-side"
+                >
+                  <ChartContainer />
+                </Box>
+                <Box flex="1">
+                  <TableContainer />
+                </Box>
+              </Stack>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+
         <Button w="100%" colorScheme="orange" onClick={() => onOpenFormModal()}>
           New Entry
         </Button>
       </VStack>
+
       <Modal
         isOpen={isFormModalOpen}
         onClose={onCloseFormModal}
