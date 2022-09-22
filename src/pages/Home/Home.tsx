@@ -24,6 +24,7 @@ import {
 import { Modal } from './components/Modal'
 import { HomeForm } from './components/HomeForm'
 import DeleteConfirmation from './components/DeleteConfirmation/DeleteConfirmation'
+import ChartContainer from './containers/ChartContainer'
 
 export function Home() {
   const [formEditInitialValues, setFormEditInitialValues] = useState<
@@ -35,24 +36,6 @@ export function Home() {
     | undefined
   >()
 
-  const primaryAxis = React.useMemo<
-    AxisLinearOptions<typeof mock['chart'][number]['data'][number]>
-  >(
-    () => ({
-      getValue: (datum) => Number(datum.primary),
-    }),
-    [],
-  )
-  const secondaryAxes = React.useMemo<
-    AxisLinearOptions<typeof mock['chart'][number]['data'][number]>[]
-  >(
-    () => [
-      {
-        getValue: (datum) => datum.secondary,
-      },
-    ],
-    [],
-  )
   const {
     isOpen: isFormModalOpen,
     onOpen: onOpenFormModal,
@@ -121,14 +104,7 @@ export function Home() {
           justifyContent="stretch"
         >
           <Box flex="1" minH="300px" minW="300px" data-testid="chart">
-            <Chart
-              options={{
-                data: mock.chart,
-                primaryAxis,
-                secondaryAxes,
-                tooltip: false,
-              }}
-            />
+            <ChartContainer />
           </Box>
           <Box flex="1">
             <Table<Column, Array<Row>>
