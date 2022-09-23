@@ -50,6 +50,14 @@ describe('<RootRoutes />', () => {
 
       expect(pageHeading).toBeInTheDocument()
     })
+
+    it('renders login page properly', () => {
+      const pageHeading = setup([ROUTES.login], 'heading', {
+        name: 'Login',
+      })
+
+      expect(pageHeading).toBeInTheDocument()
+    })
   })
 
   it('renders not found page when detects a unidentified route', () => {
