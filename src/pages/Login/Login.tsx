@@ -1,4 +1,5 @@
-import { Center, Container, Heading, VStack } from '@chakra-ui/react'
+import { Box, Center, Container, Heading, VStack } from '@chakra-ui/react'
+import { LoginRegisterForm, LoginRegisterFormVariant } from 'components'
 import { pxToRem } from 'utils'
 
 export function Login() {
@@ -16,6 +17,12 @@ export function Login() {
           <Heading as="h1" textAlign="center">
             Login
           </Heading>
+          <Box data-testid="form">
+            <LoginRegisterForm
+              variant={LoginRegisterFormVariant.Login}
+              onSubmit={() => alert('submit')}
+            />
+          </Box>
         </VStack>
       </Center>
     </Container>
