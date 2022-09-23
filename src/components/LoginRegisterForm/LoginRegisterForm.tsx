@@ -1,6 +1,12 @@
 import { FormControl, FormLabel, Input, VStack } from '@chakra-ui/react'
 
-type LoginRegisterFormProps = {
+export enum LoginRegisterFormVariant {
+  Login = 'login',
+  Register = 'register',
+}
+
+export type LoginRegisterFormProps = {
+  variant: LoginRegisterFormVariant
   onSubmit: () => void
 }
 
@@ -16,10 +22,12 @@ export function LoginRegisterForm(props: LoginRegisterFormProps) {
       }}
     >
       <VStack alignItems="stretch" spacing="6" w="100%">
-        <FormControl isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input type="text" />
-        </FormControl>
+        {props.variant === LoginRegisterFormVariant.Register && (
+          <FormControl isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input type="text" />
+          </FormControl>
+        )}
         <FormControl isRequired>
           <FormLabel>Email address</FormLabel>
           <Input type="email" />

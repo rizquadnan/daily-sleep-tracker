@@ -1,6 +1,9 @@
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LoginRegisterForm from './LoginRegisterForm'
+import LoginRegisterForm, {
+  LoginRegisterFormProps,
+  LoginRegisterFormVariant,
+} from './LoginRegisterForm'
 
 const getInput = (role: string, name: string | RegExp) =>
   screen.getByRole<HTMLInputElement>(role, { name })
@@ -9,19 +12,13 @@ const getEmailInput = () => getInput('textbox', /email/i)
 const getPasswordInput = () => getInput('textbox', /password/i)
 const getSubmitInput = () => screen.getByRole('button', { name: /submit/i })
 describe('<LoginRegisterForm />', () => {
+  const defaultProps: LoginRegisterFormProps = {
+    onSubmit: jest.fn(),
+    variant: LoginRegisterFormVariant.Register,
+  }
   describe('form completeness', () => {
-    it('has name input and name label', () => {
-      render(<LoginRegisterForm onSubmit={() => ''} />)
-
-      const nameInput = getNameInput()
-      expect(nameInput).toBeInTheDocument()
-
-      const nameLabel = screen.getByLabelText(/name/i)
-      expect(nameLabel).toBeInTheDocument()
-    })
-
     it('has email input and email label', () => {
-      render(<LoginRegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm {...defaultProps} />)
 
       const emailInput = getEmailInput()
       expect(emailInput).toBeInTheDocument()
@@ -31,7 +28,7 @@ describe('<LoginRegisterForm />', () => {
     })
 
     it('has password input and password label', () => {
-      render(<LoginRegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm {...defaultProps} />)
 
       const passwordInput = getPasswordInput()
       expect(passwordInput).toBeInTheDocument()
@@ -41,7 +38,7 @@ describe('<LoginRegisterForm />', () => {
     })
 
     it('has submit button', () => {
-      render(<LoginRegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm {...defaultProps} />)
 
       const submitButton = getSubmitInput()
       expect(submitButton).toBeInTheDocument()
@@ -51,7 +48,7 @@ describe('<LoginRegisterForm />', () => {
   describe('input on change', () => {
     const setup = () => {
       const user = userEvent.setup()
-      render(<LoginRegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm {...defaultProps} />)
 
       return {
         user,
@@ -92,7 +89,9 @@ describe('<LoginRegisterForm />', () => {
     it('submits properly', async () => {
       const user = userEvent.setup()
       const handleSubmit = jest.fn()
-      render(<LoginRegisterForm onSubmit={handleSubmit} />)
+      render(
+        <LoginRegisterForm {...{ ...defaultProps, onSubmit: handleSubmit }} />,
+      )
 
       const nameInput = getNameInput()
       expect(nameInput).toBeInvalid()
@@ -116,5 +115,29 @@ describe('<LoginRegisterForm />', () => {
       await user.click(submitInput)
       expect(handleSubmit).toBeCalledTimes(2)
     })
+  })
+
+  test('login variant, has no name label and name input', () => {
+    render(
+      <LoginRegisterForm
+        {...{ ...defaultProps, variant: LoginRegisterFormVariant.Login }}
+      />,
+    )
+
+    expect(
+      screen.queryByRole('textbox', { name: /name/i }),
+    ).not.toBeInTheDocument()
+
+    expect(screen.queryByLabelText(/name/i)).not.toBeInTheDocument()
+  })
+
+  test('register variant, has name label and name input', () => {
+    render(<LoginRegisterForm {...defaultProps} />)
+
+    const nameInput = getNameInput()
+    expect(nameInput).toBeInTheDocument()
+
+    const nameLabel = screen.getByLabelText(/name/i)
+    expect(nameLabel).toBeInTheDocument()
   })
 })
