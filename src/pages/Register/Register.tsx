@@ -1,6 +1,6 @@
 import { Center, Container, Heading, VStack } from '@chakra-ui/react'
 import { pxToRem } from 'utils'
-import RegisterForm from './RegisterForm'
+import { LoginRegisterForm } from 'components/LoginRegisterForm'
 
 export function Register() {
   return (
@@ -17,7 +17,7 @@ export function Register() {
           <Heading as="h1" textAlign="center">
             Register
           </Heading>
-          <RegisterForm onSubmit={() => ''} />
+          <LoginRegisterForm onSubmit={() => ''} />
         </VStack>
       </Center>
     </Container>

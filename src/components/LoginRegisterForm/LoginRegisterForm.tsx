@@ -1,10 +1,10 @@
 import { FormControl, FormLabel, Input, VStack } from '@chakra-ui/react'
 
-type RegisterFormProps = {
+type LoginRegisterFormProps = {
   onSubmit: () => void
 }
 
-export function RegisterForm(props: RegisterFormProps) {
+export function LoginRegisterForm(props: LoginRegisterFormProps) {
   return (
     <VStack
       spacing="8"
@@ -34,4 +34,4 @@ export function RegisterForm(props: RegisterFormProps) {
   )
 }
 
-export default RegisterForm
+export default LoginRegisterForm

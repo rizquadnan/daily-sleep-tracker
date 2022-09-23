@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import RegisterForm from './RegisterForm'
+import LoginRegisterForm from './LoginRegisterForm'
 
 const getInput = (role: string, name: string | RegExp) =>
   screen.getByRole<HTMLInputElement>(role, { name })
@@ -8,10 +8,10 @@ const getNameInput = () => getInput('textbox', /name/i)
 const getEmailInput = () => getInput('textbox', /email/i)
 const getPasswordInput = () => getInput('textbox', /password/i)
 const getSubmitInput = () => screen.getByRole('button', { name: /submit/i })
-describe('<RegisterForm />', () => {
+describe('<LoginRegisterForm />', () => {
   describe('form completeness', () => {
     it('has name input and name label', () => {
-      render(<RegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm onSubmit={() => ''} />)
 
       const nameInput = getNameInput()
       expect(nameInput).toBeInTheDocument()
@@ -21,7 +21,7 @@ describe('<RegisterForm />', () => {
     })
 
     it('has email input and email label', () => {
-      render(<RegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm onSubmit={() => ''} />)
 
       const emailInput = getEmailInput()
       expect(emailInput).toBeInTheDocument()
@@ -31,7 +31,7 @@ describe('<RegisterForm />', () => {
     })
 
     it('has password input and password label', () => {
-      render(<RegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm onSubmit={() => ''} />)
 
       const passwordInput = getPasswordInput()
       expect(passwordInput).toBeInTheDocument()
@@ -41,7 +41,7 @@ describe('<RegisterForm />', () => {
     })
 
     it('has submit button', () => {
-      render(<RegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm onSubmit={() => ''} />)
 
       const submitButton = getSubmitInput()
       expect(submitButton).toBeInTheDocument()
@@ -51,7 +51,7 @@ describe('<RegisterForm />', () => {
   describe('input on change', () => {
     const setup = () => {
       const user = userEvent.setup()
-      render(<RegisterForm onSubmit={() => ''} />)
+      render(<LoginRegisterForm onSubmit={() => ''} />)
 
       return {
         user,
@@ -92,7 +92,7 @@ describe('<RegisterForm />', () => {
     it('submits properly', async () => {
       const user = userEvent.setup()
       const handleSubmit = jest.fn()
-      render(<RegisterForm onSubmit={handleSubmit} />)
+      render(<LoginRegisterForm onSubmit={handleSubmit} />)
 
       const nameInput = getNameInput()
       expect(nameInput).toBeInvalid()
