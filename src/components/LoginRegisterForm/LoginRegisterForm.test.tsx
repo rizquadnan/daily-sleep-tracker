@@ -86,7 +86,7 @@ describe('<LoginRegisterForm />', () => {
   })
 
   describe('submission', () => {
-    it('submits properly', async () => {
+    test('register variant, submits properly', async () => {
       const user = userEvent.setup()
       const handleSubmit = jest.fn()
       render(
@@ -95,25 +95,58 @@ describe('<LoginRegisterForm />', () => {
 
       const nameInput = getNameInput()
       expect(nameInput).toBeInvalid()
-      await user.type(nameInput, 'anything')
+      const nameInputValue = 'anything'
+      await user.type(nameInput, nameInputValue)
       expect(nameInput).toBeValid()
 
       const emailInput = getEmailInput()
       expect(emailInput).toBeInvalid()
-      await user.type(emailInput, 'anything@gmail.com')
+      const emailInputValue = 'anything@gmail.com'
+      await user.type(emailInput, emailInputValue)
       expect(emailInput).toBeValid()
 
       const passwordInput = getPasswordInput()
       expect(passwordInput).toBeInvalid()
-      await user.type(passwordInput, 'anything')
+      const passwordInputValue = 'anything-password'
+      await user.type(passwordInput, passwordInputValue)
       expect(passwordInput).toBeValid()
 
       const submitInput = getSubmitInput()
       expect(handleSubmit).toBeCalledTimes(0)
       await user.click(submitInput)
-      expect(handleSubmit).toBeCalledTimes(1)
+      expect(handleSubmit).toBeCalledWith({
+        name: nameInputValue,
+        email: emailInputValue,
+        password: passwordInputValue,
+      })
+    })
+
+    test('login variant, submits properly', async () => {
+      const user = userEvent.setup()
+      const handleSubmit = jest.fn()
+      render(
+        <LoginRegisterForm {...{ ...defaultProps, onSubmit: handleSubmit }} />,
+      )
+
+      const emailInput = getEmailInput()
+      expect(emailInput).toBeInvalid()
+      const emailInputValue = 'anything@gmail.com'
+      await user.type(emailInput, emailInputValue)
+      expect(emailInput).toBeValid()
+
+      const passwordInput = getPasswordInput()
+      expect(passwordInput).toBeInvalid()
+      const passwordInputValue = 'anything-password'
+      await user.type(passwordInput, passwordInputValue)
+      expect(passwordInput).toBeValid()
+
+      const submitInput = getSubmitInput()
+      expect(handleSubmit).toBeCalledTimes(0)
       await user.click(submitInput)
-      expect(handleSubmit).toBeCalledTimes(2)
+      expect(handleSubmit).toBeCalledWith({
+        email: emailInputValue,
+        password: passwordInputValue,
+      })
     })
   })
 
