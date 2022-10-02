@@ -16,7 +16,7 @@ describe('<RootRoutes />', () => {
   it('renders default page properly', () => {
     render(<RootRoutes />, { wrapper: BrowserRouter })
     const defaultPageHeading = screen.getByRole('heading', {
-      name: 'Splash Screen',
+      name: 'Welcome to Daily Sleep Tracker',
     })
     expect(defaultPageHeading).toBeInTheDocument()
   })
@@ -54,6 +54,14 @@ describe('<RootRoutes />', () => {
     it('renders login page properly', () => {
       const pageHeading = setup([ROUTES.login], 'heading', {
         name: 'Login',
+      })
+
+      expect(pageHeading).toBeInTheDocument()
+    })
+
+    it('renders splash page properly', () => {
+      const pageHeading = setup([ROUTES.splashScreen], 'heading', {
+        name: 'Welcome to Daily Sleep Tracker',
       })
 
       expect(pageHeading).toBeInTheDocument()
