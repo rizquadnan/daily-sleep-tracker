@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import React from 'react'
+import { Link } from 'react-router-dom'
 import { pxToRem } from 'utils'
 
 export function SplashScreen() {
@@ -35,10 +35,10 @@ export function SplashScreen() {
               </Text>
             </Box>
             <ButtonGroup w="100%">
-              <Button flex="1" onClick={() => alert('register')}>
+              <Button as={Link} to="/register" flex="1">
                 Register
               </Button>
-              <Button flex="1" onClick={() => alert('login')}>
+              <Button as={Link} to="/login" flex="1">
                 Login
               </Button>
             </ButtonGroup>

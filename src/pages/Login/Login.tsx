@@ -1,5 +1,13 @@
-import { Box, Center, Container, Heading, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Heading,
+  VStack,
+} from '@chakra-ui/react'
 import { LoginRegisterForm, LoginRegisterFormVariant } from 'components'
+import { Link } from 'react-router-dom'
 import { pxToRem } from 'utils'
 
 export function Login() {
@@ -23,6 +31,9 @@ export function Login() {
               onSubmit={() => alert('submit')}
             />
           </Box>
+          <Button as={Link} to="/">
+            Go Back
+          </Button>
         </VStack>
       </Center>
     </Container>
