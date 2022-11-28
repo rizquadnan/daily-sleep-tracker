@@ -1,9 +1,10 @@
 import { screen, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LoginRegisterForm, {
+import LoginRegisterForm from './LoginRegisterForm'
+import {
   LoginRegisterFormProps,
   LoginRegisterFormVariant,
-} from './LoginRegisterForm'
+} from './loginRegisterTypes'
 
 const getInput = (role: string, name: string | RegExp) =>
   screen.getByRole<HTMLInputElement>(role, { name })
@@ -14,7 +15,7 @@ const getSubmitInput = () => screen.getByRole('button', { name: /submit/i })
 describe('<LoginRegisterForm />', () => {
   const defaultProps: LoginRegisterFormProps = {
     onSubmit: jest.fn(),
-    variant: LoginRegisterFormVariant.Register,
+    variant: LoginRegisterFormVariant.Login,
   }
   describe('form completeness', () => {
     it('has email input and email label', () => {
@@ -46,16 +47,20 @@ describe('<LoginRegisterForm />', () => {
   })
 
   describe('input on change', () => {
-    const setup = () => {
+    const setup = (variant: string = LoginRegisterFormVariant.Login) => {
       const user = userEvent.setup()
-      render(<LoginRegisterForm {...defaultProps} />)
+      const props =
+        variant === LoginRegisterFormVariant.Login
+          ? defaultProps
+          : { ...defaultProps, variant: LoginRegisterFormVariant.Register }
+      render(<LoginRegisterForm {...props} />)
 
       return {
         user,
       }
     }
     it('name input on change works', async () => {
-      const { user } = setup()
+      const { user } = setup(LoginRegisterFormVariant.Register)
 
       const inputFromUser = 'hello world'
       const input = getNameInput()
@@ -90,7 +95,12 @@ describe('<LoginRegisterForm />', () => {
       const user = userEvent.setup()
       const handleSubmit = jest.fn()
       render(
-        <LoginRegisterForm {...{ ...defaultProps, onSubmit: handleSubmit }} />,
+        <LoginRegisterForm
+          {...{
+            variant: LoginRegisterFormVariant.Register,
+            onSubmit: handleSubmit,
+          }}
+        />,
       )
 
       const nameInput = getNameInput()
@@ -165,7 +175,11 @@ describe('<LoginRegisterForm />', () => {
   })
 
   test('register variant, has name label and name input', () => {
-    render(<LoginRegisterForm {...defaultProps} />)
+    render(
+      <LoginRegisterForm
+        {...{ variant: LoginRegisterFormVariant.Register, onSubmit: jest.fn() }}
+      />,
+    )
 
     const nameInput = getNameInput()
     expect(nameInput).toBeInTheDocument()
