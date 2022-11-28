@@ -14,6 +14,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "axios": "^1.2.0",
     "date-fns": "^2.29.2",
     "dayzed": "^3.2.3",
     "framer-motion": "^6",
@@ -30,7 +31,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "type-check": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
@@ -52,7 +54,7 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!d3-time-format|d3-time|d3-array|internmap)"
+      "<rootDir>/node_modules/(?!d3-time-format|d3-time|d3-array|internmap|axios)"
     ]
   }
 }
