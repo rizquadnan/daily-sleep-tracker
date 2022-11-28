@@ -4,6 +4,7 @@ import {
   Center,
   Container,
   Heading,
+  useToast,
   VStack,
 } from '@chakra-ui/react'
 import { pxToRem } from 'utils'
@@ -11,9 +12,15 @@ import {
   LoginRegisterForm,
   LoginRegisterFormVariant,
 } from 'components/LoginRegisterForm'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { handleRegister } from './handleRegister'
+import { useState } from 'react'
 
 export function Register() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const navigate = useNavigate()
+  const toast = useToast()
+
   return (
     <Container>
       <Center minH="100vh">
@@ -31,10 +38,24 @@ export function Register() {
           <Box data-testid="form">
             <LoginRegisterForm
               variant={LoginRegisterFormVariant.Register}
-              onSubmit={() => ''}
+              isLoading={isSubmitting}
+              onSubmit={async (formValues) => {
+                setIsSubmitting(true)
+                await handleRegister(formValues)
+                setIsSubmitting(false)
+
+                toast({
+                  title: 'Account created!',
+                  description:
+                    'To use the app. Please login with your credentials',
+                  isClosable: true,
+                })
+
+                navigate('/login')
+              }}
             />
           </Box>
-          <Button as={Link} to="/">
+          <Button as={Link} to="/" isDisabled={isSubmitting}>
             Go Back
           </Button>
         </VStack>
