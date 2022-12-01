@@ -15,6 +15,9 @@ import {
 import { Modal } from './components/Modal'
 import { HomeForm } from './components/HomeForm'
 import { TableContainer, ChartContainer } from './containers'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from 'providers'
+import { ROUTES } from 'routes'
 
 export function Home() {
   const {
@@ -22,6 +25,9 @@ export function Home() {
     onOpen: onOpenFormModal,
     onClose: onCloseFormModal,
   } = useDisclosure()
+  const navigate = useNavigate()
+  const authContext = useAuth()
+
   return (
     <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
@@ -65,9 +71,25 @@ export function Home() {
           </TabPanels>
         </Tabs>
 
-        <Button w="100%" colorScheme="orange" onClick={() => onOpenFormModal()}>
-          New Entry
-        </Button>
+        <VStack alignItems="stretch">
+          <Button
+            w="100%"
+            colorScheme="orange"
+            onClick={() => onOpenFormModal()}
+          >
+            New Entry
+          </Button>
+          <Button
+            w="100%"
+            variant="ghost"
+            onClick={() => {
+              authContext.logout()
+              navigate(ROUTES.splashScreen)
+            }}
+          >
+            Logout
+          </Button>
+        </VStack>
       </VStack>
 
       <Modal

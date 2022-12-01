@@ -8,6 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { LoginRegisterForm, LoginRegisterFormVariant } from 'components'
+import { useAuth } from 'providers'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from 'routes'
@@ -18,6 +19,7 @@ export function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const toast = useToast()
+  const authContext = useAuth()
 
   return (
     <Container>
@@ -39,8 +41,12 @@ export function Login() {
               variant={LoginRegisterFormVariant.Login}
               onSubmit={async (formValues) => {
                 setIsSubmitting(true)
-                await handleLogin(formValues)
+                const {
+                  data: { user, token },
+                } = await handleLogin(formValues)
                 setIsSubmitting(false)
+
+                authContext.login(user, token)
 
                 toast({
                   title: 'Successfull',
