@@ -1,4 +1,4 @@
-import { fetcher } from "shared/fetcher";
+import { fetcher } from "api/fetcher";
 
 type RegisterBody = {
   email: string;

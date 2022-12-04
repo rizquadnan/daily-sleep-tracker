@@ -1,5 +1,5 @@
 import { User } from "models";
-import { fetcher } from "shared/fetcher";
+import { fetcher } from "api/fetcher";
 
 type LoginBody = {
   email: string;
