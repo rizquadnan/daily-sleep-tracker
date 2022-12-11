@@ -35,24 +35,25 @@ export function Home() {
 
         <Tabs isFitted isLazy>
           <TabList>
-            <Tab>Chart</Tab>
             <Tab>Table</Tab>
+            <Tab>Chart</Tab>
             <Tab>Side by side</Tab>
           </TabList>
 
           <TabPanels>
+            <TabPanel>
+              <TableContainer />
+            </TabPanel>
             <TabPanel>
               <Box minH="300px" minW="300px" data-testid="chart-singular">
                 <ChartContainer />
               </Box>
             </TabPanel>
             <TabPanel>
-              <TableContainer />
-            </TabPanel>
-            <TabPanel>
               <Stack
                 flexDirection={{ base: 'column', lg: 'row' }}
                 alignItems={{ base: 'stretch', lg: 'center' }}
+                spacing={{ base: '24px', lg: 0 }}
                 justifyContent="stretch"
               >
                 <Box

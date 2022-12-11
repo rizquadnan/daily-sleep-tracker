@@ -1,9 +1,26 @@
-import { Box, useDisclosure } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import { Box, Skeleton, useDisclosure } from '@chakra-ui/react'
+import { useSleeps } from 'api'
+import { useAuth } from 'providers'
+import { useState } from 'react'
 import { Column, Row, Table, TableActions, TableProps } from '../components'
 import DeleteConfirmation from '../components/DeleteConfirmation/DeleteConfirmation'
 import { HomeForm } from '../components/HomeForm'
 import { Modal } from '../components/Modal'
+
+function getHH(minutes: number) {
+  return Math.round(minutes / 60)
+}
+
+function getMM(minutes: number) {
+  return minutes % 60
+}
+
+function minutesToHHMM(minutes: number) {
+  const HH = getHH(minutes) < 10 ? `0${getHH(minutes)}` : getHH(minutes) < 10
+  const MM = getMM(minutes) < 10 ? `0${getMM(minutes)}` : getMM(minutes)
+
+  return `${HH}:${MM}`
+}
 
 export function TableContainer() {
   const [formEditInitialValues, setFormEditInitialValues] = useState<
@@ -40,37 +57,32 @@ export function TableContainer() {
     onOpenDeleteModal()
   }
 
-  const renderTableActions = () => (
-    <TableActions onEdit={onEdit} onDelete={onDelete} />
-  )
+  const auth = useAuth()
+  const { data, state } = useSleeps({
+    shouldFetch: auth.isAuthenticated && auth.user != null,
+    userId: auth.user ? auth.user.id : undefined,
+  })
+
+  if (state === 'loading' || state === 'idle') {
+    return <Skeleton isLoaded={false} h={300} />
+  }
+
+  if (state === 'error') {
+    return <div>Error</div>
+  }
+
   const table: TableProps<Column, Array<Row>> = {
     columns: ['date', 'sleepStart', 'sleepEnd', 'totalDuration', 'actions'],
-    rows: [
-      {
-        key: '1',
-        date: '13/12/21',
-        sleepStart: '22:00',
-        sleepEnd: '05:00',
-        totalDuration: '07:00',
-        actions: renderTableActions(),
-      },
-      {
-        key: '2',
-        date: '14/12/21',
-        sleepStart: '23:00',
-        sleepEnd: '05:20',
-        totalDuration: '06:20',
-        actions: renderTableActions(),
-      },
-      {
-        key: '3',
-        date: '15/12/21',
-        sleepStart: '20:00',
-        sleepEnd: '04:00',
-        totalDuration: '08:00',
-        actions: renderTableActions(),
-      },
-    ],
+    rows: data
+      ? data.map((sleep) => ({
+          key: String(sleep.id),
+          date: sleep.date,
+          actions: <TableActions onEdit={onEdit} onDelete={onDelete} />,
+          sleepEnd: sleep.sleepEnd,
+          sleepStart: sleep.sleepStart,
+          totalDuration: minutesToHHMM(sleep.sleepDuration),
+        }))
+      : [],
   }
 
   return (

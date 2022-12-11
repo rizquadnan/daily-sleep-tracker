@@ -3,4 +3,5 @@ export type Sleep = {
   id: number;
   sleepEnd: string;
   sleepStart: string;
+  sleepDuration: number;
 };

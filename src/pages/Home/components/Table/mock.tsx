@@ -6,10 +6,10 @@ const chart = [
   {
     label: 'Series 1',
     data: [
-      { primary: 10, secondary: 22 },
-      { primary: 14, secondary: 10 },
-      { primary: 41, secondary: 69 },
-      { primary: 44, secondary: 67 },
+      { hours: 7, date: new Date('12/07/22') },
+      { hours: 5, date: new Date('12/08/22') },
+      { hours: 6, date: new Date('12/09/22') },
+      { hours: 8, date: new Date('12/10/22') },
     ],
   },
 ]
@@ -24,7 +24,10 @@ const table: TableProps<Column, Array<Row>> = {
       sleepEnd: '05:00',
       totalDuration: '07:00',
       actions: (
-        <TableActions onEdit={() => alert('Edit')} onDelete={() => alert('Delete')}/>
+        <TableActions
+          onEdit={() => alert('Edit')}
+          onDelete={() => alert('Delete')}
+        />
       ),
     },
     {
@@ -34,7 +37,10 @@ const table: TableProps<Column, Array<Row>> = {
       sleepEnd: '05:20',
       totalDuration: '06:20',
       actions: (
-        <TableActions onEdit={() => alert('Edit')} onDelete={() => alert('Delete')}/>
+        <TableActions
+          onEdit={() => alert('Edit')}
+          onDelete={() => alert('Delete')}
+        />
       ),
     },
     {
@@ -44,7 +50,10 @@ const table: TableProps<Column, Array<Row>> = {
       sleepEnd: '04:00',
       totalDuration: '08:00',
       actions: (
-        <TableActions onEdit={() => alert('Edit')} onDelete={() => alert('Delete')}/>
+        <TableActions
+          onEdit={() => alert('Edit')}
+          onDelete={() => alert('Delete')}
+        />
       ),
     },
   ],

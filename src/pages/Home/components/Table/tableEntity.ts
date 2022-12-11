@@ -10,7 +10,4 @@ type Row = {
   actions: ReactElement;
 };
 
-export type {
-  Column,
-  Row
-}
+export type { Column, Row };
