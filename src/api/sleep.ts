@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import { Sleep } from "models";
-import useSWR from "swr";
+import useSWR, { KeyedMutator } from "swr";
 import { fetcher } from "./fetcher";
 import { FetchState, getFetchState } from "./utils";
 
@@ -13,6 +13,7 @@ type UseSleepReturnVal = {
   data: Sleep[] | null;
   state: FetchState;
   error: any | null;
+  mutate: KeyedMutator<AxiosResponse<Sleep[], any>>;
 };
 
 export function useSleeps({
@@ -24,6 +25,8 @@ export function useSleeps({
     (url) => fetcher.get(url, { params: { user: userId } })
   );
 
+  const { mutate } = res;
+
   return {
     data: res.data?.data ?? null,
     state: getFetchState({
@@ -32,5 +35,17 @@ export function useSleeps({
       success: res.data !== undefined,
     }),
     error: res.error ?? null,
+    mutate,
   };
+}
+
+type CreateSleepRequest = {
+  date: string;
+  sleepStart: string;
+  sleepEnd: string;
+  userId: number;
+};
+
+export function createSleep(body: CreateSleepRequest) {
+  return fetcher.post("/sleeps", body);
 }

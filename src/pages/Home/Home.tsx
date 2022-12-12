@@ -18,6 +18,7 @@ import { TableContainer, ChartContainer } from './containers'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'providers'
 import { ROUTES } from 'routes'
+import { useSubmit } from './hooks'
 
 export function Home() {
   const {
@@ -27,6 +28,10 @@ export function Home() {
   } = useDisclosure()
   const navigate = useNavigate()
   const authContext = useAuth()
+
+  const { isSubmitting, handleSubmit } = useSubmit({
+    closeModalCallback: onCloseFormModal,
+  })
 
   return (
     <Container maxW="container.xl">
@@ -99,7 +104,11 @@ export function Home() {
         title="Add Sleep Data"
       >
         <Box paddingBottom="24px">
-          <HomeForm variant="create" onSubmit={() => alert('submit')} />
+          <HomeForm
+            isLoading={isSubmitting}
+            variant="create"
+            onSubmit={handleSubmit}
+          />
         </Box>
       </Modal>
     </Container>

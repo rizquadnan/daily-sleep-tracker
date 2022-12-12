@@ -19,21 +19,20 @@ import {
   SUBMIT_INPUT,
 } from '.'
 
+export type FormValues = {
+  sleepStart: string
+  sleepEnd: string
+  totalSleep: string
+}
+
 type HomeFormBaseProps = {
-  onSubmit: (submitValue: {
-    sleepStart: string
-    sleepEnd: string
-    totalSleep: string
-  }) => void
+  onSubmit: (submitValue: FormValues) => void
+  isLoading?: boolean
 }
 
 type HomeFormEditProps = {
   variant: 'edit'
-  initialValues: {
-    sleepStart: string
-    sleepEnd: string
-    totalSleep: string
-  }
+  initialValues: FormValues
 }
 
 type HomeFormCreateProps = {
@@ -121,6 +120,7 @@ export function HomeForm(props: HomeFormProps) {
             type="datetime-local"
             value={sleepStart}
             onChange={(e) => setSleepStart(e.target.value)}
+            disabled={props.isLoading}
           />
 
           {sleepStartError && (
@@ -134,6 +134,7 @@ export function HomeForm(props: HomeFormProps) {
             type="datetime-local"
             value={sleepEnd}
             onChange={(e) => setSleepEnd(e.target.value)}
+            disabled={props.isLoading}
           />
 
           {sleepEndError && (
@@ -145,7 +146,7 @@ export function HomeForm(props: HomeFormProps) {
       <Input
         type="submit"
         cursor="pointer"
-        disabled={hasAnyError || isEmptyForm}
+        disabled={hasAnyError || isEmptyForm || props.isLoading}
         value={SUBMIT_INPUT}
       />
     </VStack>
