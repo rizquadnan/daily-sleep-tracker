@@ -61,12 +61,7 @@ export function Home() {
                 spacing={{ base: '24px', lg: 0 }}
                 justifyContent="stretch"
               >
-                <Box
-                  flex="1"
-                  minH="300px"
-                  minW="300px"
-                  data-testid="chart-side-by-side"
-                >
+                <Box flex="1" data-testid="chart-side-by-side">
                   <ChartContainer />
                 </Box>
                 <Box flex="1">
