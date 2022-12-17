@@ -1,4 +1,4 @@
-import { Box, Skeleton, useDisclosure } from '@chakra-ui/react'
+import { Box, Flex, Skeleton, useDisclosure, VStack } from '@chakra-ui/react'
 import { useSleeps } from 'api'
 import { useAuth } from 'providers'
 import { useState } from 'react'
@@ -6,6 +6,7 @@ import { Column, Row, Table, TableActions, TableProps } from '../components'
 import DeleteConfirmation from '../components/DeleteConfirmation/DeleteConfirmation'
 import { HomeForm } from '../components/HomeForm'
 import { Modal } from '../components/Modal'
+import Pagination from '../components/Pagination/Pagination'
 
 function getHH(minutes: number) {
   return Math.round(minutes / 60)
@@ -21,6 +22,8 @@ function minutesToHHMM(minutes: number) {
 
   return `${HH}:${MM}`
 }
+
+const PAGE_SIZE = 5
 
 export function TableContainer() {
   const [formEditInitialValues, setFormEditInitialValues] = useState<
@@ -58,9 +61,12 @@ export function TableContainer() {
   }
 
   const auth = useAuth()
-  const { data, state } = useSleeps({
+  const [page, setPage] = useState(1)
+  const { data, totalPage, state } = useSleeps({
     shouldFetch: auth.isAuthenticated && auth.user != null,
     userId: auth.user ? auth.user.id : undefined,
+    page,
+    pageSize: PAGE_SIZE,
   })
 
   if (state === 'loading' || state === 'idle') {
@@ -71,6 +77,7 @@ export function TableContainer() {
     return <div>Error</div>
   }
 
+  const validTotalPage = totalPage ?? 1
   const table: TableProps<Column, Array<Row>> = {
     columns: ['date', 'sleepStart', 'sleepEnd', 'totalDuration', 'actions'],
     rows: data
@@ -87,7 +94,17 @@ export function TableContainer() {
 
   return (
     <>
-      <Table<Column, Array<Row>> columns={table.columns} rows={table.rows} />
+      <VStack alignItems="stretch">
+        <Table<Column, Array<Row>> columns={table.columns} rows={table.rows} />
+        <Flex justifyContent="flex-end">
+          <Pagination
+            page={page}
+            totalPage={validTotalPage}
+            onNext={() => setPage((prev) => prev + 1)}
+            onPrev={() => setPage((prev) => prev - 1)}
+          />
+        </Flex>
+      </VStack>
       <Modal
         isOpen={isFormModalOpen}
         onClose={onCloseFormModal}
