@@ -1,12 +1,20 @@
 import { Box, Flex, Skeleton, useDisclosure, VStack } from '@chakra-ui/react'
 import { useSleeps } from 'api'
+import { Sleep } from 'models'
 import { useAuth } from 'providers'
 import { useState } from 'react'
-import { Column, Row, Table, TableActions, TableProps } from '../components'
-import DeleteConfirmation from '../components/DeleteConfirmation/DeleteConfirmation'
-import { HomeForm } from '../components/HomeForm'
-import { Modal } from '../components/Modal'
-import Pagination from '../components/Pagination/Pagination'
+import {
+  Column,
+  Row,
+  Table,
+  TableActions,
+  TableProps,
+  Modal,
+  HomeForm,
+  DeleteConfirmation,
+  Pagination,
+} from '../../components'
+import { useSubmit } from './hooks'
 
 function getHH(minutes: number) {
   return Math.round(minutes / 60)
@@ -34,9 +42,10 @@ const PAGE_SIZE = 5
 export function TableContainer() {
   const [formEditInitialValues, setFormEditInitialValues] = useState<
     | {
+        id: number
         sleepStart: string
-        sleepEnd: string
         totalSleep: string
+        sleepEnd: string
         date: string
       }
     | undefined
@@ -53,12 +62,13 @@ export function TableContainer() {
     onClose: onCloseDeleteModal,
   } = useDisclosure()
 
-  const onEdit = () => {
+  const onEdit = (sleep: Sleep) => {
     setFormEditInitialValues({
-      date: toYYYYMMDD('23-11-2021'),
-      sleepStart: '21:00',
-      sleepEnd: '04:00',
-      totalSleep: '07:00',
+      sleepStart: sleep.sleepStart,
+      sleepEnd: sleep.sleepEnd,
+      totalSleep: minutesToHHMM(sleep.sleepDuration),
+      date: toYYYYMMDD(sleep.date),
+      id: sleep.id,
     })
 
     onOpenFormModal()
@@ -77,6 +87,10 @@ export function TableContainer() {
     pageSize: PAGE_SIZE,
   })
 
+  const { handleSubmit } = useSubmit({
+    closeModalCallback: onCloseFormModal,
+  })
+
   if (state === 'loading' || state === 'idle') {
     return <Skeleton isLoaded={false} h={300} />
   }
@@ -92,7 +106,9 @@ export function TableContainer() {
       ? data.map((sleep) => ({
           key: String(sleep.id),
           date: sleep.date,
-          actions: <TableActions onEdit={onEdit} onDelete={onDelete} />,
+          actions: (
+            <TableActions onEdit={() => onEdit(sleep)} onDelete={onDelete} />
+          ),
           sleepEnd: sleep.sleepEnd,
           sleepStart: sleep.sleepStart,
           totalDuration: minutesToHHMM(sleep.sleepDuration),
@@ -129,7 +145,14 @@ export function TableContainer() {
                 date: '',
               }
             }
-            onSubmit={() => alert('submit')}
+            onSubmit={(formValues) => {
+              if (formEditInitialValues?.id) {
+                handleSubmit({
+                  ...formValues,
+                  sleepId: formEditInitialValues.id,
+                })
+              }
+            }}
           />
         </Box>
       </Modal>

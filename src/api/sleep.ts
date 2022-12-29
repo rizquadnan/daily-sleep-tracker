@@ -54,6 +54,17 @@ type CreateSleepRequest = {
   userId: number;
 };
 
+type EditSleepRequest = {
+  sleepId: number;
+  date: string;
+  sleepStart: string;
+  sleepEnd: string;
+};
+
 export function createSleep(body: CreateSleepRequest) {
   return fetcher.post("/sleeps", body);
+}
+
+export function editSleep({ sleepId, ...rest }: EditSleepRequest) {
+  return fetcher.patch(`/sleeps/${sleepId}`, rest);
 }

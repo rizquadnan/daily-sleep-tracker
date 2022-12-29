@@ -5,7 +5,7 @@ export type DeleteConfirmationProps = {
   onClickNo(): void
   onClickYes(): void
 }
-function DeleteConfirmation(props: DeleteConfirmationProps) {
+export function DeleteConfirmation(props: DeleteConfirmationProps) {
   return (
     <VStack alignItems="stretch" paddingBottom="24px" spacing="12px">
       <Text>Are you sure to delete this data ?</Text>

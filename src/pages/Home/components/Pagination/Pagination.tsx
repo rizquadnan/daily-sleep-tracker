@@ -11,7 +11,7 @@ type PaginationProps = {
 const isFirstPage = (page: number) => page === 1
 const isLastPage = (page: number, totalPage: number) => page === totalPage
 
-function Pagination(props: PaginationProps) {
+export function Pagination(props: PaginationProps) {
   return (
     <HStack>
       <IconButton
