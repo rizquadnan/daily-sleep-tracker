@@ -61,10 +61,18 @@ type EditSleepRequest = {
   sleepEnd: string;
 };
 
+type DeleteSleepRequest = {
+  sleepId: number;
+};
+
 export function createSleep(body: CreateSleepRequest) {
   return fetcher.post("/sleeps", body);
 }
 
 export function editSleep({ sleepId, ...rest }: EditSleepRequest) {
   return fetcher.patch(`/sleeps/${sleepId}`, rest);
+}
+
+export function deleteSleep({ sleepId }: DeleteSleepRequest) {
+  return fetcher.delete(`/sleeps/${sleepId}`);
 }

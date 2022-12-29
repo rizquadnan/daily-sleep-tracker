@@ -14,7 +14,7 @@ import {
   DeleteConfirmation,
   Pagination,
 } from '../../components'
-import { useSubmit } from './hooks'
+import { useDelete, useSubmit } from './hooks'
 
 function getHH(minutes: number) {
   return Math.round(minutes / 60)
@@ -50,6 +50,7 @@ export function TableContainer() {
       }
     | undefined
   >()
+  const [deleteSleepId, setDeleteSleepId] = useState<number | null>(null)
 
   const {
     isOpen: isFormModalOpen,
@@ -74,7 +75,9 @@ export function TableContainer() {
     onOpenFormModal()
   }
 
-  const onDelete = () => {
+  const onDelete = (sleep: Sleep) => {
+    setDeleteSleepId(sleep.id)
+
     onOpenDeleteModal()
   }
 
@@ -90,6 +93,8 @@ export function TableContainer() {
   const { handleSubmit } = useSubmit({
     closeModalCallback: onCloseFormModal,
   })
+
+  const { handleDelete } = useDelete({ closeModalCallback: onCloseDeleteModal })
 
   if (state === 'loading' || state === 'idle') {
     return <Skeleton isLoaded={false} h={300} />
@@ -107,7 +112,10 @@ export function TableContainer() {
           key: String(sleep.id),
           date: sleep.date,
           actions: (
-            <TableActions onEdit={() => onEdit(sleep)} onDelete={onDelete} />
+            <TableActions
+              onEdit={() => onEdit(sleep)}
+              onDelete={() => onDelete(sleep)}
+            />
           ),
           sleepEnd: sleep.sleepEnd,
           sleepStart: sleep.sleepStart,
@@ -164,7 +172,11 @@ export function TableContainer() {
         <Box data-testid="delete-modal-content">
           <DeleteConfirmation
             onClickNo={onCloseDeleteModal}
-            onClickYes={() => alert('Delete')}
+            onClickYes={() => {
+              if (deleteSleepId) {
+                handleDelete(deleteSleepId)
+              }
+            }}
           />
         </Box>
       </Modal>
