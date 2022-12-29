@@ -4,7 +4,6 @@ import { useAuth } from "providers";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { FormValues } from "./components/HomeForm";
-import { formatCreateFormValues } from "./utils";
 
 type UseSubmitArgs = {
   closeModalCallback: () => void;
@@ -24,7 +23,7 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
   const { mutate } = useSWRConfig();
 
   const handleSubmit = async (formValues: FormValues) => {
-    const { date, sleepStart, sleepEnd } = formatCreateFormValues(formValues);
+    const { date, sleepStart, sleepEnd } = formValues;
 
     if (authContext.isAuthenticated && authContext.user?.id) {
       setIsSubmitting(true);

@@ -171,6 +171,7 @@ describe('<HomeForm />', () => {
               sleepStart,
               sleepEnd,
               totalSleep,
+              date: '',
             },
           }}
         />,

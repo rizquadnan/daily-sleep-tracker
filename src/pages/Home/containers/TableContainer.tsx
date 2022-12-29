@@ -23,6 +23,12 @@ function minutesToHHMM(minutes: number) {
   return `${HH}:${MM}`
 }
 
+function toYYYYMMDD(ddMmYy: string) {
+  const [dd, mm, yy] = ddMmYy.split('-')
+
+  return `${yy}-${mm}-${dd}`
+}
+
 const PAGE_SIZE = 5
 
 export function TableContainer() {
@@ -31,6 +37,7 @@ export function TableContainer() {
         sleepStart: string
         sleepEnd: string
         totalSleep: string
+        date: string
       }
     | undefined
   >()
@@ -48,9 +55,10 @@ export function TableContainer() {
 
   const onEdit = () => {
     setFormEditInitialValues({
-      sleepStart: '2022-09-16T22:17',
-      sleepEnd: '2022-09-17T05:21',
-      totalSleep: '07:04',
+      date: toYYYYMMDD('23-11-2021'),
+      sleepStart: '21:00',
+      sleepEnd: '04:00',
+      totalSleep: '07:00',
     })
 
     onOpenFormModal()
@@ -118,6 +126,7 @@ export function TableContainer() {
                 sleepEnd: '',
                 sleepStart: '',
                 totalSleep: '',
+                date: '',
               }
             }
             onSubmit={() => alert('submit')}
