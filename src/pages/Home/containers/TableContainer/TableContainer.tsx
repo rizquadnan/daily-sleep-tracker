@@ -17,7 +17,7 @@ import {
 import { useDelete, useSubmit } from './hooks'
 
 function getHH(minutes: number) {
-  return Math.round(minutes / 60)
+  return Math.floor(minutes / 60)
 }
 
 function getMM(minutes: number) {
