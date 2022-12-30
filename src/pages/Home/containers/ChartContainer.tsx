@@ -20,7 +20,7 @@ const PAGE_SIZE = 5
 export function ChartContainer() {
   const auth = useAuth()
   const [page, setPage] = useState(1)
-  const { data, state } = useSleeps({
+  const { data, state, totalPage } = useSleeps({
     shouldFetch: auth.isAuthenticated && auth.user ? true : false,
     page,
     pageSize: PAGE_SIZE,
@@ -50,6 +50,8 @@ export function ChartContainer() {
     return <div>Error</div>
   }
 
+  const validTotalPage = totalPage ?? 1
+
   return (
     <VStack alignItems="stretch">
       <Box minH={406}>
@@ -75,7 +77,7 @@ export function ChartContainer() {
       <Flex justifyContent="flex-end">
         <Pagination
           page={page}
-          totalPage={2}
+          totalPage={validTotalPage}
           onNext={() => setPage((prev) => prev + 1)}
           onPrev={() => setPage((prev) => prev - 1)}
         />
