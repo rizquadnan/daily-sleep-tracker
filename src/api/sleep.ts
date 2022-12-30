@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { GetSleepsResponse, Sleep } from "models";
 import useSWR, { KeyedMutator } from "swr";
 import { fetcher } from "./fetcher";
@@ -16,7 +15,7 @@ type UseSleepReturnVal = {
   totalPage: number | null;
   state: FetchState;
   error: any | null;
-  mutate: KeyedMutator<AxiosResponse<GetSleepsResponse, any>>;
+  mutate: KeyedMutator<GetSleepsResponse>;
 };
 
 export function useSleeps({
@@ -25,18 +24,18 @@ export function useSleeps({
   page,
   pageSize,
 }: UseSleepsArgs): UseSleepReturnVal {
-  const res = useSWR<AxiosResponse<GetSleepsResponse>>(
+  const res = useSWR<GetSleepsResponse>(
     shouldFetch
       ? `/sleeps?user=${userId}&page=${page}&page_size=${pageSize}`
       : null,
-    (url) => fetcher.get(url)
+    (url) => fetcher.get(url).then((res) => res.data)
   );
 
   const { mutate } = res;
 
   return {
-    data: res.data?.data.rows ?? null,
-    totalPage: res.data?.data.totalPage ?? null,
+    data: res.data?.rows ?? null,
+    totalPage: res.data?.totalPage ?? null,
     state: getFetchState({
       idle: !shouldFetch,
       error: res.error,
