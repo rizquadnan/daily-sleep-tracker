@@ -92,6 +92,7 @@ export function TableContainer() {
 
   const { handleSubmit } = useSubmit({
     closeModalCallback: onCloseFormModal,
+    refetchSleeps: () => mutate(),
   })
 
   const { handleDelete } = useDelete({

@@ -7,6 +7,7 @@ import { FormValues } from "../../../components";
 
 type UseSubmitArgs = {
   closeModalCallback: () => void;
+  refetchSleeps: () => void;
 };
 
 type EditFormValues = FormValues & { sleepId: number };
@@ -37,7 +38,7 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
           sleepId: formValues.sleepId,
         });
 
-        mutate("/sleeps");
+        args.refetchSleeps();
 
         toast({
           title: "Successfull",
