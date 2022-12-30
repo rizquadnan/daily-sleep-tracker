@@ -80,7 +80,10 @@ export function TableGuestModeContainer() {
   }
 
   const [page, setPage] = useState(1)
-  const { data, totalPage } = useMockSleeps({ page, pageSize: PAGE_SIZE })
+  const { data, totalPage, handleDelete } = useMockSleeps({
+    page,
+    pageSize: PAGE_SIZE,
+  })
 
   const validTotalPage = totalPage ?? 1
   const table: TableProps<Column, Array<Row>> = {
@@ -149,7 +152,10 @@ export function TableGuestModeContainer() {
             onClickNo={onCloseDeleteModal}
             onClickYes={() => {
               if (deleteSleepId) {
-                console.log('delete')
+                handleDelete({
+                  deleteSleepId,
+                  closeModalCallback: onCloseDeleteModal,
+                })
               }
             }}
           />

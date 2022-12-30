@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import { Sleep } from "models";
 import { useLocalStorage } from "utils";
 import { MOCK_SLEEPS } from "./mockData";
@@ -33,9 +34,14 @@ type UseMockSleepsArgs = {
   page?: number;
   pageSize?: number;
 };
+type HandleDeleteArgs = {
+  deleteSleepId: number;
+  closeModalCallback: () => void;
+};
 type UseMockSleepReturnVal = {
   data: Sleep[];
   totalPage: number | null;
+  handleDelete: (args: HandleDeleteArgs) => void;
 };
 export function useMockSleeps({
   page,
@@ -45,6 +51,7 @@ export function useMockSleeps({
     "mock-sleeps",
     MOCK_SLEEPS
   );
+  const toast = useToast();
 
   const hasPagination = page && pageSize;
 
@@ -58,5 +65,17 @@ export function useMockSleeps({
     totalPage: hasPagination
       ? calculateTotalPage({ totalRows: sleeps.length, pageSize })
       : null,
+    handleDelete: ({ deleteSleepId, closeModalCallback }) => {
+      setSleeps((prev) => {
+        return prev.filter((sleep) => sleep.id !== deleteSleepId);
+      });
+
+      toast({
+        title: "Successfull",
+        description: "Sleep is deleted",
+        isClosable: true,
+      });
+      closeModalCallback();
+    },
   };
 }
