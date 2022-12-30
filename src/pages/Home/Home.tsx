@@ -18,6 +18,7 @@ import {
   TableContainer,
   ChartContainer,
   ChartGuestModeContainer,
+  TableGuestModeContainer,
 } from './containers'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'providers'
@@ -51,7 +52,11 @@ export function Home() {
 
           <TabPanels>
             <TabPanel>
-              <TableContainer />
+              {authContext.isGuestMode ? (
+                <TableGuestModeContainer />
+              ) : (
+                <TableContainer />
+              )}
             </TabPanel>
             <TabPanel>
               <Box minH="300px" minW="300px" data-testid="chart-singular">
@@ -77,7 +82,11 @@ export function Home() {
                   )}
                 </Box>
                 <Box flex="1">
-                  <TableContainer />
+                  {authContext.isGuestMode ? (
+                    <TableGuestModeContainer />
+                  ) : (
+                    <TableContainer />
+                  )}
                 </Box>
               </Stack>
             </TabPanel>
