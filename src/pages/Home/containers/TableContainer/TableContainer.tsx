@@ -83,7 +83,7 @@ export function TableContainer() {
 
   const auth = useAuth()
   const [page, setPage] = useState(1)
-  const { data, totalPage, state } = useSleeps({
+  const { data, totalPage, state, mutate } = useSleeps({
     shouldFetch: auth.isAuthenticated && auth.user != null,
     userId: auth.user ? auth.user.id : undefined,
     page,
@@ -94,7 +94,10 @@ export function TableContainer() {
     closeModalCallback: onCloseFormModal,
   })
 
-  const { handleDelete } = useDelete({ closeModalCallback: onCloseDeleteModal })
+  const { handleDelete } = useDelete({
+    closeModalCallback: onCloseDeleteModal,
+    refetchSleeps: () => mutate(),
+  })
 
   if (state === 'loading' || state === 'idle') {
     return <Skeleton isLoaded={false} h={300} />

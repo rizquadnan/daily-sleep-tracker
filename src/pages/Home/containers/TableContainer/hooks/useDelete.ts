@@ -2,11 +2,10 @@ import { useToast } from "@chakra-ui/react";
 import { deleteSleep } from "api";
 import { useAuth } from "providers";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
-import { FormValues } from "../../../components";
 
 type UseDeleteArgs = {
   closeModalCallback: () => void;
+  refetchSleeps: () => void;
 };
 
 type UseDeleteReturnVal = {
@@ -20,8 +19,6 @@ export function useDelete(args: UseDeleteArgs): UseDeleteReturnVal {
   const [isDeleting, setIsSubmitting] = useState(false);
   const toast = useToast();
 
-  const { mutate } = useSWRConfig();
-
   const handleDelete = async (sleepId: number) => {
     if (authContext.isAuthenticated && authContext.user?.id) {
       setIsSubmitting(true);
@@ -30,7 +27,7 @@ export function useDelete(args: UseDeleteArgs): UseDeleteReturnVal {
           sleepId,
         });
 
-        mutate("/sleeps");
+        args.refetchSleeps();
 
         toast({
           title: "Successfull",
