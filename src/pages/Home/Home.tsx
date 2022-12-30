@@ -14,7 +14,11 @@ import {
 } from '@chakra-ui/react'
 import { Modal } from './components/Modal'
 import { HomeForm } from './components/HomeForm'
-import { TableContainer, ChartContainer } from './containers'
+import {
+  TableContainer,
+  ChartContainer,
+  ChartGuestModeContainer,
+} from './containers'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'providers'
 import { ROUTES } from 'routes'
@@ -51,7 +55,11 @@ export function Home() {
             </TabPanel>
             <TabPanel>
               <Box minH="300px" minW="300px" data-testid="chart-singular">
-                <ChartContainer />
+                {authContext.isGuestMode ? (
+                  <ChartGuestModeContainer />
+                ) : (
+                  <ChartContainer />
+                )}
               </Box>
             </TabPanel>
             <TabPanel>
@@ -62,7 +70,11 @@ export function Home() {
                 justifyContent="stretch"
               >
                 <Box flex="1" data-testid="chart-side-by-side">
-                  <ChartContainer />
+                  {authContext.isGuestMode ? (
+                    <ChartGuestModeContainer />
+                  ) : (
+                    <ChartContainer />
+                  )}
                 </Box>
                 <Box flex="1">
                   <TableContainer />
@@ -80,16 +92,29 @@ export function Home() {
           >
             New Entry
           </Button>
-          <Button
-            w="100%"
-            variant="ghost"
-            onClick={() => {
-              authContext.logout()
-              navigate(ROUTES.splashScreen)
-            }}
-          >
-            Logout
-          </Button>
+          {authContext.isGuestMode ? (
+            <Button
+              w="100%"
+              variant="ghost"
+              onClick={() => {
+                authContext.leaveGuestMode()
+                navigate(ROUTES.splashScreen)
+              }}
+            >
+              Leave Guest Mode
+            </Button>
+          ) : (
+            <Button
+              w="100%"
+              variant="ghost"
+              onClick={() => {
+                authContext.logout()
+                navigate(ROUTES.splashScreen)
+              }}
+            >
+              Logout
+            </Button>
+          )}
         </VStack>
       </VStack>
 
