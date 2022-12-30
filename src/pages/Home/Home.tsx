@@ -24,6 +24,19 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from 'providers'
 import { ROUTES } from 'routes'
 import { useSubmit } from './hooks'
+import { useMockSleeps } from 'api'
+
+export function toYYYYMMDD(ddMmYy: string) {
+  const [dd, mm, yy] = ddMmYy.split('-')
+
+  return `${yy}-${mm}-${dd}`
+}
+
+export function toMinutesDuration(hhMM: string) {
+  const [hh, mm] = hhMM.split(':')
+
+  return Number(hh) * 60 + Number(mm)
+}
 
 export function Home() {
   const {
@@ -37,6 +50,8 @@ export function Home() {
   const { isSubmitting, handleSubmit } = useSubmit({
     closeModalCallback: onCloseFormModal,
   })
+
+  const { handleCreate: handleGuestModeSubmit } = useMockSleeps({})
 
   return (
     <Container maxW="container.xl">
@@ -133,11 +148,25 @@ export function Home() {
         title="Add Sleep Data"
       >
         <Box paddingBottom="24px">
-          <HomeForm
-            isLoading={isSubmitting}
-            variant="create"
-            onSubmit={handleSubmit}
-          />
+          {authContext.isGuestMode ? (
+            <HomeForm
+              variant="create"
+              onSubmit={(formValues) => {
+                handleGuestModeSubmit({
+                  formValues,
+                  formatDate: toYYYYMMDD,
+                  formatDuration: toMinutesDuration,
+                  closeModalCallback: onCloseFormModal,
+                })
+              }}
+            />
+          ) : (
+            <HomeForm
+              isLoading={isSubmitting}
+              variant="create"
+              onSubmit={handleSubmit}
+            />
+          )}
         </Box>
       </Modal>
     </Container>

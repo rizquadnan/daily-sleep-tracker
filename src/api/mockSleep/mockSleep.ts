@@ -46,11 +46,18 @@ type HandleEditArgs = {
   formatDuration: (duration: string) => number;
   closeModalCallback: () => void;
 };
+type HandleCreateArgs = {
+  formValues: FormValues;
+  formatDate: (date: string) => string;
+  formatDuration: (duration: string) => number;
+  closeModalCallback: () => void;
+};
 type UseMockSleepReturnVal = {
   data: Sleep[];
   totalPage: number | null;
   handleDelete: (args: HandleDeleteArgs) => void;
   handleEdit: (args: HandleEditArgs) => void;
+  handleCreate: (args: HandleCreateArgs) => void;
 };
 export function useMockSleeps({
   page,
@@ -110,6 +117,32 @@ export function useMockSleeps({
       toast({
         title: "Successfull",
         description: "Sleep is edited",
+        isClosable: true,
+      });
+      closeModalCallback();
+    },
+    handleCreate: ({
+      formValues,
+      formatDate,
+      formatDuration,
+      closeModalCallback,
+    }) => {
+      setSleeps((prev) => {
+        return [
+          ...prev,
+          {
+            id: Date.now(),
+            date: formatDate(formValues.date),
+            sleepEnd: formValues.sleepEnd,
+            sleepStart: formValues.sleepStart,
+            sleepDuration: formatDuration(formValues.totalSleep),
+          },
+        ];
+      });
+
+      toast({
+        title: "Successfull",
+        description: "Sleep is created",
         isClosable: true,
       });
       closeModalCallback();
