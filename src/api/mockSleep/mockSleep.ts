@@ -1,5 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { Sleep } from "models";
+import { FormValues } from "pages/Home/components";
 import { useLocalStorage } from "utils";
 import { MOCK_SLEEPS } from "./mockData";
 
@@ -38,10 +39,18 @@ type HandleDeleteArgs = {
   deleteSleepId: number;
   closeModalCallback: () => void;
 };
+type EditFormValues = FormValues & { sleepId: number };
+type HandleEditArgs = {
+  formValues: EditFormValues;
+  formatDate: (date: string) => string;
+  formatDuration: (duration: string) => number;
+  closeModalCallback: () => void;
+};
 type UseMockSleepReturnVal = {
   data: Sleep[];
   totalPage: number | null;
   handleDelete: (args: HandleDeleteArgs) => void;
+  handleEdit: (args: HandleEditArgs) => void;
 };
 export function useMockSleeps({
   page,
@@ -73,6 +82,34 @@ export function useMockSleeps({
       toast({
         title: "Successfull",
         description: "Sleep is deleted",
+        isClosable: true,
+      });
+      closeModalCallback();
+    },
+    handleEdit: ({
+      formValues,
+      formatDate,
+      formatDuration,
+      closeModalCallback,
+    }) => {
+      setSleeps((prev) => {
+        return prev.map((sleep) => {
+          if (sleep.id !== formValues.sleepId) {
+            return sleep;
+          } else {
+            return {
+              ...sleep,
+              ...formValues,
+              sleepDuration: formatDuration(formValues.totalSleep),
+              date: formatDate(formValues.date),
+            };
+          }
+        });
+      });
+
+      toast({
+        title: "Successfull",
+        description: "Sleep is edited",
         isClosable: true,
       });
       closeModalCallback();

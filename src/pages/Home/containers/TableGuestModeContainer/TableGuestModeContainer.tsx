@@ -12,30 +12,14 @@ import {
   HomeForm,
   DeleteConfirmation,
   Pagination,
-} from '../components'
-
-function getHH(minutes: number) {
-  return Math.floor(minutes / 60)
-}
-
-function getMM(minutes: number) {
-  return minutes % 60
-}
-
-function minutesToHHMM(minutes: number) {
-  const HH = getHH(minutes) < 10 ? `0${getHH(minutes)}` : getHH(minutes) < 10
-  const MM = getMM(minutes) < 10 ? `0${getMM(minutes)}` : getMM(minutes)
-
-  return `${HH}:${MM}`
-}
-
-function toYYYYMMDD(ddMmYy: string) {
-  const [dd, mm, yy] = ddMmYy.split('-')
-
-  return `${yy}-${mm}-${dd}`
-}
-
-const PAGE_SIZE = 5
+} from '../../components'
+import { PAGE_SIZE } from './constant'
+import {
+  minutesToHHMM,
+  toDDMMYYYY,
+  toYYYYMMDD,
+  toMinutesDuration,
+} from './utils'
 
 export function TableGuestModeContainer() {
   const [formEditInitialValues, setFormEditInitialValues] = useState<
@@ -80,7 +64,7 @@ export function TableGuestModeContainer() {
   }
 
   const [page, setPage] = useState(1)
-  const { data, totalPage, handleDelete } = useMockSleeps({
+  const { data, totalPage, handleDelete, handleEdit } = useMockSleeps({
     page,
     pageSize: PAGE_SIZE,
   })
@@ -136,7 +120,15 @@ export function TableGuestModeContainer() {
             }
             onSubmit={(formValues) => {
               if (formEditInitialValues?.id) {
-                console.log('submit')
+                handleEdit({
+                  formValues: {
+                    ...formValues,
+                    sleepId: formEditInitialValues.id,
+                  },
+                  closeModalCallback: onCloseFormModal,
+                  formatDate: toDDMMYYYY,
+                  formatDuration: toMinutesDuration,
+                })
               }
             }}
           />
