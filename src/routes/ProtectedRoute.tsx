@@ -11,9 +11,9 @@ export const ProtectedRoute = ({
   children,
   redirectPath = ROUTES.splashScreen,
 }: ProtectedRouteProps) => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isGuestMode } = useAuth()
 
-  return isAuthenticated ? (
+  return isAuthenticated || isGuestMode ? (
     <>{children}</>
   ) : (
     <Navigate to={redirectPath} replace />
