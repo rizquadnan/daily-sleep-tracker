@@ -1,8 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { Sleep } from "models";
 import { FormValues } from "pages/Home/components";
-import { useLocalStorage } from "utils";
-import { MOCK_SLEEPS } from "./mockData";
+import { useGuestMode } from "providers";
 
 type CalculateTotalPageArgs = {
   totalRows: number;
@@ -63,10 +62,8 @@ export function useMockSleeps({
   page,
   pageSize,
 }: UseMockSleepsArgs): UseMockSleepReturnVal {
-  const [sleeps, setSleeps] = useLocalStorage<Sleep[]>(
-    "mock-sleeps",
-    MOCK_SLEEPS
-  );
+  const { sleeps, setSleeps } = useGuestMode();
+
   const toast = useToast();
 
   const hasPagination = page && pageSize;
@@ -82,9 +79,7 @@ export function useMockSleeps({
       ? calculateTotalPage({ totalRows: sleeps.length, pageSize })
       : null,
     handleDelete: ({ deleteSleepId, closeModalCallback }) => {
-      setSleeps((prev) => {
-        return prev.filter((sleep) => sleep.id !== deleteSleepId);
-      });
+      setSleeps(sleeps.filter((sleep) => sleep.id !== deleteSleepId));
 
       toast({
         title: "Successfull",
@@ -99,8 +94,8 @@ export function useMockSleeps({
       formatDuration,
       closeModalCallback,
     }) => {
-      setSleeps((prev) => {
-        return prev.map((sleep) => {
+      setSleeps(
+        sleeps.map((sleep) => {
           if (sleep.id !== formValues.sleepId) {
             return sleep;
           } else {
@@ -111,8 +106,8 @@ export function useMockSleeps({
               date: formatDate(formValues.date),
             };
           }
-        });
-      });
+        })
+      );
 
       toast({
         title: "Successfull",
@@ -127,18 +122,16 @@ export function useMockSleeps({
       formatDuration,
       closeModalCallback,
     }) => {
-      setSleeps((prev) => {
-        return [
-          ...prev,
-          {
-            id: Date.now(),
-            date: formatDate(formValues.date),
-            sleepEnd: formValues.sleepEnd,
-            sleepStart: formValues.sleepStart,
-            sleepDuration: formatDuration(formValues.totalSleep),
-          },
-        ];
-      });
+      setSleeps([
+        ...sleeps,
+        {
+          id: Date.now(),
+          date: formatDate(formValues.date),
+          sleepEnd: formValues.sleepEnd,
+          sleepStart: formValues.sleepStart,
+          sleepDuration: formatDuration(formValues.totalSleep),
+        },
+      ]);
 
       toast({
         title: "Successfull",
