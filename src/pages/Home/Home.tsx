@@ -21,7 +21,7 @@ import {
   TableGuestModeContainer,
 } from './containers'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from 'providers'
+import { useAuth, useGuestMode } from 'providers'
 import { ROUTES } from 'routes'
 import { useSubmit } from './hooks'
 import { useMockSleeps } from 'api'
@@ -46,6 +46,7 @@ export function Home() {
   } = useDisclosure()
   const navigate = useNavigate()
   const authContext = useAuth()
+  const guestModeContext = useGuestMode()
 
   const { isSubmitting, handleSubmit } = useSubmit({
     closeModalCallback: onCloseFormModal,
@@ -67,7 +68,7 @@ export function Home() {
 
           <TabPanels>
             <TabPanel>
-              {authContext.isGuestMode ? (
+              {guestModeContext.isGuestMode ? (
                 <TableGuestModeContainer />
               ) : (
                 <TableContainer />
@@ -75,7 +76,7 @@ export function Home() {
             </TabPanel>
             <TabPanel>
               <Box minH="300px" minW="300px" data-testid="chart-singular">
-                {authContext.isGuestMode ? (
+                {guestModeContext.isGuestMode ? (
                   <ChartGuestModeContainer />
                 ) : (
                   <ChartContainer />
@@ -90,14 +91,14 @@ export function Home() {
                 justifyContent="stretch"
               >
                 <Box flex="1" data-testid="chart-side-by-side">
-                  {authContext.isGuestMode ? (
+                  {guestModeContext.isGuestMode ? (
                     <ChartGuestModeContainer />
                   ) : (
                     <ChartContainer />
                   )}
                 </Box>
                 <Box flex="1">
-                  {authContext.isGuestMode ? (
+                  {guestModeContext.isGuestMode ? (
                     <TableGuestModeContainer />
                   ) : (
                     <TableContainer />
@@ -116,12 +117,12 @@ export function Home() {
           >
             New Entry
           </Button>
-          {authContext.isGuestMode ? (
+          {guestModeContext.isGuestMode ? (
             <Button
               w="100%"
               variant="ghost"
               onClick={() => {
-                authContext.leaveGuestMode()
+                guestModeContext.leaveGuestMode()
                 navigate(ROUTES.splashScreen)
               }}
             >
@@ -148,7 +149,7 @@ export function Home() {
         title="Add Sleep Data"
       >
         <Box paddingBottom="24px">
-          {authContext.isGuestMode ? (
+          {guestModeContext.isGuestMode ? (
             <HomeForm
               variant="create"
               onSubmit={(formValues) => {

@@ -1,4 +1,4 @@
-import { useAuth } from 'providers'
+import { useAuth, useGuestMode } from 'providers'
 import { Navigate, RouteProps } from 'react-router-dom'
 import { ROUTES } from './constant'
 
@@ -11,7 +11,8 @@ export const ProtectedRoute = ({
   children,
   redirectPath = ROUTES.splashScreen,
 }: ProtectedRouteProps) => {
-  const { isAuthenticated, isGuestMode } = useAuth()
+  const { isAuthenticated } = useAuth()
+  const { isGuestMode } = useGuestMode()
 
   return isAuthenticated || isGuestMode ? (
     <>{children}</>

@@ -1,5 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { AuthProvider } from 'providers'
+import { AuthProvider, GuestModeProvider } from 'providers'
 import { BrowserRouter } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 import { theme } from 'theme'
@@ -11,7 +11,9 @@ function App() {
       <ChakraProvider theme={theme}>
         <SWRConfig>
           <AuthProvider>
-            <RootRoutes />
+            <GuestModeProvider>
+              <RootRoutes />
+            </GuestModeProvider>
           </AuthProvider>
         </SWRConfig>
       </ChakraProvider>

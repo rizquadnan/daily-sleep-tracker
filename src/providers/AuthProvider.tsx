@@ -19,7 +19,6 @@ type AuthProviderProps = {
 export const AuthProvider = (props: AuthProviderProps) => {
   const [state, setState] = useLocalStorage<AuthState>('auth', {
     isAuthenticated: false,
-    isGuestMode: false,
     user: null,
     token: null,
   })

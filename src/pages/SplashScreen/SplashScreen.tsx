@@ -8,13 +8,13 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { useAuth } from 'providers'
+import { useGuestMode } from 'providers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from 'routes'
 import { pxToRem } from 'utils'
 
 export function SplashScreen() {
-  const authContext = useAuth()
+  const guestModeContext = useGuestMode()
   const navigate = useNavigate()
 
   return (
@@ -53,7 +53,7 @@ export function SplashScreen() {
                 w="100%"
                 flex="1"
                 onClick={() => {
-                  authContext.enterGuestMode()
+                  guestModeContext.enterGuestMode()
                   navigate(ROUTES.home)
                 }}
               >
