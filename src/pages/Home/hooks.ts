@@ -3,6 +3,7 @@ import { createSleep } from "api";
 import { useAuth } from "providers";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
+import { useApiError } from "utils";
 import { FormValues } from "./components/HomeForm";
 
 type UseSubmitArgs = {
@@ -19,6 +20,7 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
+  const handleError = useApiError();
 
   const { mutate } = useSWRConfig();
 
@@ -45,11 +47,7 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
 
         args.closeModalCallback();
       } catch (error) {
-        toast({
-          title: "Not successfull",
-          description: "Something went wrong. Please retry to add sleep",
-          isClosable: true,
-        });
+        handleError(error);
       } finally {
         setIsSubmitting(false);
       }
