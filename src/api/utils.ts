@@ -1,3 +1,5 @@
+import axios, { AxiosError } from "axios";
+
 type GetFetchStateArgs = {
   idle: boolean;
   error: boolean;
@@ -20,4 +22,10 @@ export function getFetchState({
   } else {
     return "loading";
   }
+}
+
+export function isAxiosError<ResponseType>(
+  error: unknown
+): error is AxiosError<ResponseType> {
+  return axios.isAxiosError(error);
 }
