@@ -7,7 +7,7 @@ import { ROUTES } from "routes";
 
 import { User } from "models";
 import { fetcher } from "api/fetcher";
-import { isAxiosError } from "api/utils";
+import { useApiError } from "utils/hooks";
 
 type LoginBody = {
   email: string;
@@ -17,11 +17,6 @@ type LoginBody = {
 type LoginResponse = {
   token: string;
   user: User;
-};
-
-type ErrorResponse = {
-  message: string;
-  statusCode: number;
 };
 
 type UseLoginReturnValue = {
@@ -34,6 +29,7 @@ export function useLogin(): UseLoginReturnValue {
   const navigate = useNavigate();
   const toast = useToast();
   const authContext = useAuth();
+  const handleError = useApiError();
 
   const handleLogin = async (formValues: LoginFormValue) => {
     setIsSubmitting(true);
@@ -58,15 +54,7 @@ export function useLogin(): UseLoginReturnValue {
 
       navigate(ROUTES.home);
     } catch (error) {
-      toast({
-        title:
-          isAxiosError<ErrorResponse>(error) && error.response
-            ? error.response.data.message
-            : "Something went wrong",
-        status: "error",
-        description: "Please try again",
-        isClosable: true,
-      });
+      handleError(error);
     } finally {
       setIsSubmitting(false);
     }
