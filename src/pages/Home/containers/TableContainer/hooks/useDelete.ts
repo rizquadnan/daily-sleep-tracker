@@ -2,6 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { deleteSleep } from "api";
 import { useAuth } from "providers";
 import { useState } from "react";
+import { useApiError } from "utils";
 
 type UseDeleteArgs = {
   closeModalCallback: () => void;
@@ -18,6 +19,7 @@ export function useDelete(args: UseDeleteArgs): UseDeleteReturnVal {
 
   const [isDeleting, setIsSubmitting] = useState(false);
   const toast = useToast();
+  const handleError = useApiError();
 
   const handleDelete = async (sleepId: number) => {
     if (authContext.isAuthenticated && authContext.user?.id) {
@@ -37,11 +39,7 @@ export function useDelete(args: UseDeleteArgs): UseDeleteReturnVal {
 
         args.closeModalCallback();
       } catch (error) {
-        toast({
-          title: "Not successfull",
-          description: "Something went wrong. Please retry to delete sleep",
-          isClosable: true,
-        });
+        handleError(error);
       } finally {
         setIsSubmitting(false);
       }
