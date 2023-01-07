@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import { fetcher } from "api";
+import { useApiError } from "utils";
 
 type UseRegisterReturnValue = {
   isSubmitting: boolean;
@@ -19,22 +20,29 @@ export function useRegister(): UseRegisterReturnValue {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
+  const handleError = useApiError();
 
   const handleRegister = async (formValues: RegisterFormValue) => {
     setIsSubmitting(true);
 
     const body: RegisterBody = formValues;
-    await fetcher.post("/auth/register", body);
+    try {
+      await fetcher.post("/auth/register", body);
 
-    setIsSubmitting(false);
+      setIsSubmitting(false);
 
-    toast({
-      title: "Account created!",
-      description: "To use the app. Please login with your credentials",
-      isClosable: true,
-    });
+      toast({
+        title: "Account created!",
+        description: "To use the app. Please login with your credentials",
+        isClosable: true,
+      });
 
-    navigate("/login");
+      navigate("/login");
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return {
