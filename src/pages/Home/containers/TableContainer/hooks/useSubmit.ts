@@ -3,6 +3,7 @@ import { editSleep } from "api";
 import { useAuth } from "providers";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
+import { useApiError } from "utils";
 import { FormValues } from "../../../components";
 
 type UseSubmitArgs = {
@@ -22,8 +23,7 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const toast = useToast();
-
-  const { mutate } = useSWRConfig();
+  const handleError = useApiError();
 
   const handleSubmit = async (formValues: EditFormValues) => {
     const { date, sleepStart, sleepEnd } = formValues;
@@ -48,11 +48,7 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
 
         args.closeModalCallback();
       } catch (error) {
-        toast({
-          title: "Not successfull",
-          description: "Something went wrong. Please retry to edit sleep",
-          isClosable: true,
-        });
+        handleError(error);
       } finally {
         setIsSubmitting(false);
       }
