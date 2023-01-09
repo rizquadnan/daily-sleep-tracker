@@ -1,18 +1,9 @@
-import { Box, Flex, useDisclosure, VStack } from '@chakra-ui/react'
+import { useDisclosure } from '@chakra-ui/react'
 import { useMockSleeps } from 'api'
 import { Sleep } from 'models'
 import { useState } from 'react'
-import {
-  Column,
-  Row,
-  Table,
-  TableActions,
-  TableProps,
-  Modal,
-  HomeForm,
-  DeleteConfirmation,
-  Pagination,
-} from '../../components'
+import { Column, Row, TableActions, TableProps } from '../../components'
+import { TableAndPagination } from '../TableAndPagination'
 import { PAGE_SIZE } from './constant'
 import {
   minutesToHHMM,
@@ -88,72 +79,44 @@ export function TableGuestModeContainer() {
         }))
       : [],
   }
+  const isTableEmpty = table.rows.length === 0
 
   return (
-    <>
-      <VStack alignItems="stretch">
-        <Table<Column, Array<Row>> columns={table.columns} rows={table.rows} />
-        <Flex justifyContent="flex-end">
-          <Pagination
-            page={page}
-            totalPage={validTotalPage}
-            onNext={() => setPage((prev) => prev + 1)}
-            onPrev={() => setPage((prev) => prev - 1)}
-          />
-        </Flex>
-      </VStack>
-      <Modal
-        isOpen={isFormModalOpen}
-        onClose={onCloseFormModal}
-        title="Edit Sleep Data"
-      >
-        <Box paddingBottom="24px">
-          <HomeForm
-            variant="edit"
-            initialValues={
-              formEditInitialValues ?? {
-                sleepEnd: '',
-                sleepStart: '',
-                totalSleep: '',
-                date: '',
-              }
-            }
-            onSubmit={(formValues) => {
-              if (formEditInitialValues?.id) {
-                handleEdit({
-                  formValues: {
-                    ...formValues,
-                    sleepId: formEditInitialValues.id,
-                  },
-                  closeModalCallback: onCloseFormModal,
-                  formatDate: toDDMMYYYY,
-                  formatDuration: toMinutesDuration,
-                })
-              }
-            }}
-          />
-        </Box>
-      </Modal>
-      <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={onCloseDeleteModal}
-        title="Delete Sleep Data"
-      >
-        <Box data-testid="delete-modal-content">
-          <DeleteConfirmation
-            onClickNo={onCloseDeleteModal}
-            onClickYes={() => {
-              if (deleteSleepId) {
-                handleDelete({
-                  deleteSleepId,
-                  closeModalCallback: onCloseDeleteModal,
-                })
-              }
-            }}
-          />
-        </Box>
-      </Modal>
-    </>
+    <TableAndPagination
+      emptyData={isTableEmpty}
+      columns={table.columns}
+      rows={table.rows}
+      page={page}
+      totalPage={validTotalPage}
+      onNextPage={() => setPage((prev) => prev + 1)}
+      onPrevPage={() => setPage((prev) => prev - 1)}
+      isFormModalOpen={isFormModalOpen}
+      onCloseFormModal={onCloseFormModal}
+      formEditInitialValues={formEditInitialValues}
+      onSubmit={(formValues) => {
+        if (formEditInitialValues?.id) {
+          handleEdit({
+            formValues: {
+              ...formValues,
+              sleepId: formEditInitialValues.id,
+            },
+            closeModalCallback: onCloseFormModal,
+            formatDate: toDDMMYYYY,
+            formatDuration: toMinutesDuration,
+          })
+        }
+      }}
+      isDeleteModalOpen={isDeleteModalOpen}
+      onCloseDeleteModal={onCloseDeleteModal}
+      onDelete={() => {
+        if (deleteSleepId) {
+          handleDelete({
+            deleteSleepId,
+            closeModalCallback: onCloseDeleteModal,
+          })
+        }
+      }}
+    />
   )
 }
 
