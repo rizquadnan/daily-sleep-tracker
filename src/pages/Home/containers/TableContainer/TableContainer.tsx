@@ -1,30 +1,12 @@
-import {
-  Box,
-  Flex,
-  Image,
-  Skeleton,
-  Text,
-  useDisclosure,
-  VStack,
-} from '@chakra-ui/react'
+import { Skeleton, useDisclosure } from '@chakra-ui/react'
 import { useSleeps } from 'api'
 import { Sleep } from 'models'
 import { useAuth } from 'providers'
 import { useState } from 'react'
-import {
-  Column,
-  Row,
-  Table,
-  TableActions,
-  TableProps,
-  Modal,
-  HomeForm,
-  DeleteConfirmation,
-  Pagination,
-} from '../../components'
+import { Column, Row, TableActions, TableProps } from '../../components'
 import { useDelete, useSubmit } from './hooks'
 
-import { EmptyData, ErrorState } from 'components'
+import { ErrorState } from 'components'
 import { TableAndPagination } from '../TableAndPagination'
 
 function getHH(minutes: number) {
