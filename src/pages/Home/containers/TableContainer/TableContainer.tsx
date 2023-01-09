@@ -25,6 +25,7 @@ import {
 import { useDelete, useSubmit } from './hooks'
 
 import { EmptyData, ErrorState } from 'components'
+import { TableAndPagination } from '../TableAndPagination'
 
 function getHH(minutes: number) {
   return Math.floor(minutes / 60)
@@ -140,71 +141,33 @@ export function TableContainer() {
   const isTableEmpty = table.rows.length === 0
 
   return (
-    <>
-      <VStack alignItems="stretch">
-        {isTableEmpty ? (
-          <EmptyData />
-        ) : (
-          <>
-            <Table<Column, Array<Row>>
-              columns={table.columns}
-              rows={table.rows}
-            />
-            <Flex justifyContent="flex-end">
-              <Pagination
-                page={page}
-                totalPage={validTotalPage}
-                onNext={() => setPage((prev) => prev + 1)}
-                onPrev={() => setPage((prev) => prev - 1)}
-              />
-            </Flex>
-          </>
-        )}
-      </VStack>
-      <Modal
-        isOpen={isFormModalOpen}
-        onClose={onCloseFormModal}
-        title="Edit Sleep Data"
-      >
-        <Box paddingBottom="24px">
-          <HomeForm
-            variant="edit"
-            initialValues={
-              formEditInitialValues ?? {
-                sleepEnd: '',
-                sleepStart: '',
-                totalSleep: '',
-                date: '',
-              }
-            }
-            onSubmit={(formValues) => {
-              if (formEditInitialValues?.id) {
-                handleSubmit({
-                  ...formValues,
-                  sleepId: formEditInitialValues.id,
-                })
-              }
-            }}
-          />
-        </Box>
-      </Modal>
-      <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={onCloseDeleteModal}
-        title="Delete Sleep Data"
-      >
-        <Box data-testid="delete-modal-content">
-          <DeleteConfirmation
-            onClickNo={onCloseDeleteModal}
-            onClickYes={() => {
-              if (deleteSleepId) {
-                handleDelete(deleteSleepId)
-              }
-            }}
-          />
-        </Box>
-      </Modal>
-    </>
+    <TableAndPagination
+      emptyData={isTableEmpty}
+      columns={table.columns}
+      rows={table.rows}
+      page={page}
+      totalPage={validTotalPage}
+      onNextPage={() => setPage((prev) => prev + 1)}
+      onPrevPage={() => setPage((prev) => prev - 1)}
+      isFormModalOpen={isFormModalOpen}
+      onCloseFormModal={onCloseFormModal}
+      formEditInitialValues={formEditInitialValues}
+      onSubmit={(formValues) => {
+        if (formEditInitialValues?.id) {
+          handleSubmit({
+            ...formValues,
+            sleepId: formEditInitialValues.id,
+          })
+        }
+      }}
+      isDeleteModalOpen={isDeleteModalOpen}
+      onCloseDeleteModal={onCloseDeleteModal}
+      onDelete={() => {
+        if (deleteSleepId) {
+          handleDelete(deleteSleepId)
+        }
+      }}
+    />
   )
 }
 
