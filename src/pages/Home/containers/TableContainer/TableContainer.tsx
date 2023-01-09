@@ -1,4 +1,12 @@
-import { Box, Flex, Skeleton, useDisclosure, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Image,
+  Skeleton,
+  Text,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react'
 import { useSleeps } from 'api'
 import { Sleep } from 'models'
 import { useAuth } from 'providers'
@@ -15,6 +23,8 @@ import {
   Pagination,
 } from '../../components'
 import { useDelete, useSubmit } from './hooks'
+
+import { EmptyData } from 'components'
 
 function getHH(minutes: number) {
   return Math.floor(minutes / 60)
@@ -127,19 +137,29 @@ export function TableContainer() {
         }))
       : [],
   }
+  const isTableEmpty = table.rows.length === 0
 
   return (
     <>
       <VStack alignItems="stretch">
-        <Table<Column, Array<Row>> columns={table.columns} rows={table.rows} />
-        <Flex justifyContent="flex-end">
-          <Pagination
-            page={page}
-            totalPage={validTotalPage}
-            onNext={() => setPage((prev) => prev + 1)}
-            onPrev={() => setPage((prev) => prev - 1)}
-          />
-        </Flex>
+        {isTableEmpty ? (
+          <EmptyData />
+        ) : (
+          <>
+            <Table<Column, Array<Row>>
+              columns={table.columns}
+              rows={table.rows}
+            />
+            <Flex justifyContent="flex-end">
+              <Pagination
+                page={page}
+                totalPage={validTotalPage}
+                onNext={() => setPage((prev) => prev + 1)}
+                onPrev={() => setPage((prev) => prev - 1)}
+              />
+            </Flex>
+          </>
+        )}
       </VStack>
       <Modal
         isOpen={isFormModalOpen}

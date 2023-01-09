@@ -11,6 +11,7 @@ import {
   Tabs,
   useDisclosure,
   VStack,
+  BoxProps,
 } from '@chakra-ui/react'
 import { Modal } from './components/Modal'
 import { HomeForm } from './components/HomeForm'
@@ -24,7 +25,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth, useGuestMode } from 'providers'
 import { ROUTES } from 'routes'
 import { useSubmit } from './hooks'
-import { useMockSleeps } from 'api'
+import { useMockSleeps, useSleeps } from 'api'
+import { ReactNode } from 'react'
 
 export function toYYYYMMDD(ddMmYy: string) {
   const [dd, mm, yy] = ddMmYy.split('-')
@@ -36,6 +38,18 @@ export function toMinutesDuration(hhMM: string) {
   const [hh, mm] = hhMM.split(':')
 
   return Number(hh) * 60 + Number(mm)
+}
+
+type TabPanelContentWrapperProps = { children: ReactNode } & BoxProps
+function TabPanelContentWrapper({
+  children,
+  ...rest
+}: TabPanelContentWrapperProps) {
+  return (
+    <Box {...rest} minH={300} minW={300} paddingTop="32px">
+      {children}
+    </Box>
+  )
 }
 
 export function Home() {
@@ -54,6 +68,9 @@ export function Home() {
 
   const { handleCreate: handleGuestModeSubmit } = useMockSleeps({})
 
+  const { data } = useSleeps({ shouldFetch: false })
+  const isEmptyData = data === null
+
   return (
     <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
@@ -68,20 +85,26 @@ export function Home() {
 
           <TabPanels>
             <TabPanel>
-              {guestModeContext.isGuestMode ? (
-                <TableGuestModeContainer />
-              ) : (
-                <TableContainer />
-              )}
+              <TabPanelContentWrapper>
+                {guestModeContext.isGuestMode ? (
+                  <TableGuestModeContainer />
+                ) : (
+                  <TableContainer />
+                )}
+              </TabPanelContentWrapper>
             </TabPanel>
             <TabPanel>
-              <Box minH="300px" minW="300px" data-testid="chart-singular">
+              <TabPanelContentWrapper
+                minH="300px"
+                minW="300px"
+                data-testid="chart-singular"
+              >
                 {guestModeContext.isGuestMode ? (
                   <ChartGuestModeContainer />
                 ) : (
                   <ChartContainer />
                 )}
-              </Box>
+              </TabPanelContentWrapper>
             </TabPanel>
             <TabPanel>
               <Stack
@@ -90,20 +113,27 @@ export function Home() {
                 spacing={{ base: '24px', lg: 0 }}
                 justifyContent="stretch"
               >
-                <Box flex="1" data-testid="chart-side-by-side">
-                  {guestModeContext.isGuestMode ? (
-                    <ChartGuestModeContainer />
-                  ) : (
-                    <ChartContainer />
-                  )}
-                </Box>
-                <Box flex="1">
+                {!isEmptyData && (
+                  <TabPanelContentWrapper
+                    minH="300px"
+                    minW="300px"
+                    flex="1"
+                    data-testid="chart-side-by-side"
+                  >
+                    {guestModeContext.isGuestMode ? (
+                      <ChartGuestModeContainer />
+                    ) : (
+                      <ChartContainer />
+                    )}
+                  </TabPanelContentWrapper>
+                )}
+                <TabPanelContentWrapper minH="300px" minW="300px" flex="1">
                   {guestModeContext.isGuestMode ? (
                     <TableGuestModeContainer />
                   ) : (
                     <TableContainer />
                   )}
-                </Box>
+                </TabPanelContentWrapper>
               </Stack>
             </TabPanel>
           </TabPanels>

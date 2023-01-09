@@ -1,9 +1,10 @@
-import { Box, Flex, Skeleton, VStack } from '@chakra-ui/react'
+import { Box, Flex, Image, Skeleton, Text, VStack } from '@chakra-ui/react'
 import { useSleeps } from 'api'
 import { useAuth } from 'providers'
 import React, { useState } from 'react'
 import { AxisLinearOptions, Chart, ChartValue } from 'react-charts'
 import Pagination from '../components/Pagination/Pagination'
+import { EmptyData } from 'components'
 
 type ChartDatum = {
   hours: number
@@ -48,6 +49,10 @@ export function ChartContainer() {
 
   if (state === 'error') {
     return <div>Error</div>
+  }
+
+  if (data === null) {
+    return <EmptyData />
   }
 
   const validTotalPage = totalPage ?? 1
