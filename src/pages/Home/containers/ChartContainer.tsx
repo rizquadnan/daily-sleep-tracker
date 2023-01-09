@@ -4,7 +4,7 @@ import { useAuth } from 'providers'
 import React, { useState } from 'react'
 import { AxisLinearOptions, Chart, ChartValue } from 'react-charts'
 import Pagination from '../components/Pagination/Pagination'
-import { EmptyData } from 'components'
+import { EmptyData, ErrorState } from 'components'
 
 type ChartDatum = {
   hours: number
@@ -21,7 +21,7 @@ const PAGE_SIZE = 5
 export function ChartContainer() {
   const auth = useAuth()
   const [page, setPage] = useState(1)
-  const { data, state, totalPage } = useSleeps({
+  const { data, state, totalPage, error } = useSleeps({
     shouldFetch: auth.isAuthenticated && auth.user ? true : false,
     page,
     pageSize: PAGE_SIZE,
@@ -48,7 +48,7 @@ export function ChartContainer() {
   }
 
   if (state === 'error') {
-    return <div>Error</div>
+    return <ErrorState errorMessage={error ?? ''} />
   }
 
   if (data === null) {

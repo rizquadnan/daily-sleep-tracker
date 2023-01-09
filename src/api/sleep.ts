@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import { GetSleepsResponse, Sleep } from "models";
 import useSWR, { KeyedMutator } from "swr";
 import { fetcher } from "./fetcher";
@@ -14,7 +15,7 @@ type UseSleepReturnVal = {
   data: Sleep[] | null;
   totalPage: number | null;
   state: FetchState;
-  error: any | null;
+  error: string | null;
   mutate: KeyedMutator<GetSleepsResponse>;
 };
 
@@ -41,7 +42,7 @@ export function useSleeps({
       error: res.error,
       success: res.data !== undefined,
     }),
-    error: res.error ?? null,
+    error: res.error && isAxiosError(res.error) ? res.error.message : null,
     mutate,
   };
 }

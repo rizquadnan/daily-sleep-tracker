@@ -24,7 +24,7 @@ import {
 } from '../../components'
 import { useDelete, useSubmit } from './hooks'
 
-import { EmptyData } from 'components'
+import { EmptyData, ErrorState } from 'components'
 
 function getHH(minutes: number) {
   return Math.floor(minutes / 60)
@@ -93,7 +93,7 @@ export function TableContainer() {
 
   const auth = useAuth()
   const [page, setPage] = useState(1)
-  const { data, totalPage, state, mutate } = useSleeps({
+  const { data, totalPage, state, mutate, error } = useSleeps({
     shouldFetch: auth.isAuthenticated && auth.user != null,
     userId: auth.user ? auth.user.id : undefined,
     page,
@@ -115,7 +115,7 @@ export function TableContainer() {
   }
 
   if (state === 'error') {
-    return <div>Error</div>
+    return <ErrorState errorMessage={error ?? ''} />
   }
 
   const validTotalPage = totalPage ?? 1

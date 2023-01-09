@@ -68,7 +68,7 @@ export function Home() {
 
   const { handleCreate: handleGuestModeSubmit } = useMockSleeps({})
 
-  const { data } = useSleeps({ shouldFetch: false })
+  const { data, state } = useSleeps({ shouldFetch: false })
   const isEmptyData = data === null
 
   return (
@@ -113,20 +113,21 @@ export function Home() {
                 spacing={{ base: '24px', lg: 0 }}
                 justifyContent="stretch"
               >
-                {!isEmptyData && (
-                  <TabPanelContentWrapper
-                    minH="300px"
-                    minW="300px"
-                    flex="1"
-                    data-testid="chart-side-by-side"
-                  >
-                    {guestModeContext.isGuestMode ? (
-                      <ChartGuestModeContainer />
-                    ) : (
-                      <ChartContainer />
-                    )}
-                  </TabPanelContentWrapper>
-                )}
+                {!isEmptyData ||
+                  (state === 'error' && (
+                    <TabPanelContentWrapper
+                      minH="300px"
+                      minW="300px"
+                      flex="1"
+                      data-testid="chart-side-by-side"
+                    >
+                      {guestModeContext.isGuestMode ? (
+                        <ChartGuestModeContainer />
+                      ) : (
+                        <ChartContainer />
+                      )}
+                    </TabPanelContentWrapper>
+                  ))}
                 <TabPanelContentWrapper minH="300px" minW="300px" flex="1">
                   {guestModeContext.isGuestMode ? (
                     <TableGuestModeContainer />
