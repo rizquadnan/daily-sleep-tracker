@@ -68,9 +68,6 @@ export function Home() {
 
   const { handleCreate: handleGuestModeSubmit } = useMockSleeps({})
 
-  const { data, state } = useSleeps({ shouldFetch: false })
-  const isEmptyData = data === null
-
   return (
     <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
@@ -113,21 +110,18 @@ export function Home() {
                 spacing={{ base: '24px', lg: 0 }}
                 justifyContent="stretch"
               >
-                {!isEmptyData ||
-                  (state === 'error' && (
-                    <TabPanelContentWrapper
-                      minH="300px"
-                      minW="300px"
-                      flex="1"
-                      data-testid="chart-side-by-side"
-                    >
-                      {guestModeContext.isGuestMode ? (
-                        <ChartGuestModeContainer />
-                      ) : (
-                        <ChartContainer />
-                      )}
-                    </TabPanelContentWrapper>
-                  ))}
+                <TabPanelContentWrapper
+                  minH="300px"
+                  minW="300px"
+                  flex="1"
+                  data-testid="chart-side-by-side"
+                >
+                  {guestModeContext.isGuestMode ? (
+                    <ChartGuestModeContainer />
+                  ) : (
+                    <ChartContainer />
+                  )}
+                </TabPanelContentWrapper>
                 <TabPanelContentWrapper minH="300px" minW="300px" flex="1">
                   {guestModeContext.isGuestMode ? (
                     <TableGuestModeContainer />
