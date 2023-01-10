@@ -1,6 +1,6 @@
 import { Heading } from '@chakra-ui/react'
 import { Routes, Route } from 'react-router-dom'
-import { Home, Login, Register, SplashScreen } from 'pages'
+import { Home, Login, Register, SplashScreen, NotFound } from 'pages'
 import { ROUTES } from './constant'
 import { ProtectedRoute } from './ProtectedRoute'
 import { PageWrapper } from 'components'
@@ -46,7 +46,7 @@ export function RootRoutes() {
         path="*"
         element={
           <PageWrapper>
-            <Heading>Not found</Heading>
+            <NotFound />
           </PageWrapper>
         }
       />
