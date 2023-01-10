@@ -3,22 +3,53 @@ import { Routes, Route } from 'react-router-dom'
 import { Home, Login, Register, SplashScreen } from 'pages'
 import { ROUTES } from './constant'
 import { ProtectedRoute } from './ProtectedRoute'
+import { PageWrapper } from 'components'
 
 export function RootRoutes() {
   return (
     <Routes>
-      <Route path={ROUTES.login} element={<Login />} />
-      <Route path={ROUTES.register} element={<Register />} />
+      <Route
+        path={ROUTES.login}
+        element={
+          <PageWrapper>
+            <Login />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path={ROUTES.register}
+        element={
+          <PageWrapper>
+            <Register />
+          </PageWrapper>
+        }
+      />
       <Route
         path={ROUTES.home}
         element={
           <ProtectedRoute>
-            <Home />
+            <PageWrapper>
+              <Home />
+            </PageWrapper>
           </ProtectedRoute>
         }
       />
-      <Route path={ROUTES.splashScreen} element={<SplashScreen />} />
-      <Route path="*" element={<Heading>Not found</Heading>} />
+      <Route
+        path={ROUTES.splashScreen}
+        element={
+          <PageWrapper>
+            <SplashScreen />
+          </PageWrapper>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <PageWrapper>
+            <Heading>Not found</Heading>
+          </PageWrapper>
+        }
+      />
     </Routes>
   )
 }

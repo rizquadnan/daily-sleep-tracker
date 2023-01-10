@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  ChakraProvider,
-  Container,
-  Heading,
-  Flex,
-  VStack,
-} from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider, GuestModeProvider } from 'providers'
 import { BrowserRouter } from 'react-router-dom'
 import { SWRConfig } from 'swr'

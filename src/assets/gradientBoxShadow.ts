@@ -1,10 +1,13 @@
 import { BoxProps } from "@chakra-ui/react";
 
-export const gradientBoxShadow: Pick<
+type GradientBoxShadow = Pick<
   BoxProps,
   "_before" | "_after" | "_hover" | "position" | "backgroundColor" | "zIndex"
-> = {
-  backgroundColor: "white",
+>;
+export const getGradientBoxShadow = (
+  colorMode: "dark" | "light"
+): GradientBoxShadow => ({
+  backgroundColor: colorMode === "dark" ? "#1A202C" : "#FFFFFF",
   zIndex: 1,
   position: "relative",
   _after: {
@@ -38,4 +41,4 @@ export const gradientBoxShadow: Pick<
     transition: "opacity 0.3s",
     borderRadius: "inherit",
   },
-};
+});

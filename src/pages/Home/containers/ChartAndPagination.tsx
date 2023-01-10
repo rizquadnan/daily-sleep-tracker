@@ -1,4 +1,4 @@
-import { Box, Flex, VStack } from '@chakra-ui/react'
+import { Box, Flex, useColorMode, VStack } from '@chakra-ui/react'
 import { Sleep } from 'models'
 import { AxisLinearOptions, Chart } from 'react-charts'
 import { Pagination } from '../components'
@@ -24,11 +24,14 @@ function toMmDdYy(ddMmYy: string) {
 }
 
 export function ChartAndPagination(props: ChartAndPaginationProps) {
+  const { colorMode } = useColorMode()
+
   return (
     <VStack alignItems="stretch">
       <Box minH={406}>
         <Chart
           options={{
+            dark: colorMode === 'dark',
             data: [
               {
                 label: 'Series 1',

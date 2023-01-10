@@ -6,9 +6,10 @@ import {
   Container,
   Heading,
   Text,
+  useColorMode,
   VStack,
 } from '@chakra-ui/react'
-import { gradientBoxShadow } from 'assets/gradientBoxShadow'
+import { getGradientBoxShadow } from 'assets/gradientBoxShadow'
 import { useGuestMode } from 'providers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from 'routes'
@@ -17,6 +18,7 @@ import { pxToRem } from 'utils'
 export function SplashScreen() {
   const guestModeContext = useGuestMode()
   const navigate = useNavigate()
+  const { colorMode } = useColorMode()
 
   return (
     <Container>
@@ -29,7 +31,7 @@ export function SplashScreen() {
           maxW={pxToRem(480)}
           alignItems="strech"
           spacing="24px"
-          {...gradientBoxShadow}
+          {...getGradientBoxShadow(colorMode)}
         >
           <Heading as="h1" textAlign="center">
             Welcome to Daily Sleep Tracker

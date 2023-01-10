@@ -1,5 +1,10 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { BASE_FONT_SIZE } from "./constant";
+
+const config: ThemeConfig = {
+  initialColorMode: "system",
+  useSystemColorMode: true,
+};
 
 export const theme = extendTheme({
   styles: {
@@ -9,4 +14,5 @@ export const theme = extendTheme({
       },
     },
   },
+  config,
 });

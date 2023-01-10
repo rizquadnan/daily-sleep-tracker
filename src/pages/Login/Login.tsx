@@ -4,9 +4,10 @@ import {
   Center,
   Container,
   Heading,
+  useColorMode,
   VStack,
 } from '@chakra-ui/react'
-import { gradientBoxShadow } from 'assets/gradientBoxShadow'
+import { getGradientBoxShadow } from 'assets/gradientBoxShadow'
 import { LoginRegisterForm, LoginRegisterFormVariant } from 'components'
 import { Link } from 'react-router-dom'
 import { pxToRem } from 'utils'
@@ -14,6 +15,8 @@ import { useLogin } from './hooks'
 
 export function Login() {
   const { isSubmitting, handleLogin } = useLogin()
+
+  const { colorMode } = useColorMode()
 
   return (
     <Container>
@@ -25,7 +28,7 @@ export function Login() {
           w="100%"
           maxW={pxToRem(480)}
           alignItems="strech"
-          {...gradientBoxShadow}
+          {...getGradientBoxShadow(colorMode)}
         >
           <Heading as="h1" textAlign="center">
             Login
