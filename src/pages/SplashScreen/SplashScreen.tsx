@@ -36,7 +36,7 @@ export function SplashScreen() {
           </Heading>
           <VStack spacing="16px">
             <Box>
-              <Text>
+              <Text fontSize="15px" textAlign="center">
                 You can find out your daily sleep patterns here. Register to try
                 it out! Login to go to your account. Or try out the app using
                 Guest Mode!

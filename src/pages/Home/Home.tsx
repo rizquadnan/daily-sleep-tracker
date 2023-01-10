@@ -79,8 +79,6 @@ export function Home() {
   return (
     <Container maxW="container.xl">
       <VStack alignItems="stretch" padding="10rem 0" spacing="10">
-        <Heading textAlign="center">Home</Heading>
-
         <Tabs isFitted isLazy>
           <TabList>
             <Tab>Table</Tab>
