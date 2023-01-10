@@ -1,8 +1,10 @@
 import { Box, Flex, VStack } from '@chakra-ui/react'
 import { useMockSleeps } from 'api'
+import { EmptyData } from 'components'
 import React, { useState } from 'react'
 import { AxisLinearOptions, Chart, ChartValue } from 'react-charts'
 import Pagination from '../components/Pagination/Pagination'
+import { ChartAndPagination } from './ChartAndPagination'
 
 type ChartDatum = {
   hours: number
@@ -37,37 +39,20 @@ export function ChartGuestModeContainer() {
 
   const validTotalPage = totalPage ?? 1
 
+  if (data.length === 0) {
+    return <EmptyData />
+  }
+
   return (
-    <VStack alignItems="stretch">
-      <Box minH={406}>
-        <Chart
-          options={{
-            data: [
-              {
-                label: 'Series 1',
-                data: data
-                  ? data.map((sleep) => ({
-                      hours: Math.round(sleep.sleepDuration / 60),
-                      date: new Date(toMmDdYy(sleep.date)),
-                    }))
-                  : [],
-              },
-            ],
-            primaryAxis,
-            secondaryAxes,
-            tooltip: false,
-          }}
-        />
-      </Box>
-      <Flex justifyContent="flex-end">
-        <Pagination
-          page={page}
-          totalPage={validTotalPage}
-          onNext={() => setPage((prev) => prev + 1)}
-          onPrev={() => setPage((prev) => prev - 1)}
-        />
-      </Flex>
-    </VStack>
+    <ChartAndPagination
+      primaryAxis={primaryAxis}
+      secondaryAxes={secondaryAxes}
+      data={data}
+      page={page}
+      totalPage={validTotalPage}
+      onNextPage={() => setPage((prev) => prev + 1)}
+      onPrevPage={() => setPage((prev) => prev - 1)}
+    />
   )
 }
 
