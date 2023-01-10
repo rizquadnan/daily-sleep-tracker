@@ -1,7 +1,7 @@
-import { useToast } from "@chakra-ui/react";
+import { useDisclosure, useToast } from "@chakra-ui/react";
 import { createSleep } from "api";
-import { useAuth } from "providers";
-import { useState } from "react";
+import { useAuth, useGuestMode } from "providers";
+import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
 import { useApiError } from "utils";
 import { FormValues } from "./components/HomeForm";
@@ -57,5 +57,42 @@ export function useSubmit(args: UseSubmitArgs): UseSubmitReturnVal {
   return {
     isSubmitting,
     handleSubmit,
+  };
+}
+
+type UseGuestModeModalReturnValue = {
+  isGuestMode: boolean;
+  isGuestModeModalOpen: boolean;
+  onCloseGuestModal: () => void;
+};
+
+export function useGuestModeModal(): UseGuestModeModalReturnValue {
+  const {
+    isGuestMode,
+    isFirstTimeOpeningGuestMode,
+    setIsFirstTimeOpeningGuestMode,
+  } = useGuestMode();
+  const {
+    isOpen: isGuestModeModalOpen,
+    onOpen: onOpenGuestModeModal,
+    onClose: onCloseGuestModal,
+  } = useDisclosure();
+
+  useEffect(() => {
+    if (isGuestMode && isFirstTimeOpeningGuestMode) {
+      onOpenGuestModeModal();
+      setIsFirstTimeOpeningGuestMode(false);
+    }
+  }, [
+    onOpenGuestModeModal,
+    isGuestMode,
+    isFirstTimeOpeningGuestMode,
+    setIsFirstTimeOpeningGuestMode,
+  ]);
+
+  return {
+    isGuestMode,
+    isGuestModeModalOpen,
+    onCloseGuestModal,
   };
 }

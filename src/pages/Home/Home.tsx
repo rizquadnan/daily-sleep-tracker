@@ -12,6 +12,7 @@ import {
   useDisclosure,
   VStack,
   BoxProps,
+  Text,
 } from '@chakra-ui/react'
 import { Modal } from './components/Modal'
 import { HomeForm } from './components/HomeForm'
@@ -24,9 +25,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useGuestMode } from 'providers'
 import { ROUTES } from 'routes'
-import { useSubmit } from './hooks'
-import { useMockSleeps, useSleeps } from 'api'
-import { ReactNode } from 'react'
+import { useGuestModeModal, useSubmit } from './hooks'
+import { useMockSleeps } from 'api'
+import { ReactNode, useEffect } from 'react'
 
 export function toYYYYMMDD(ddMmYy: string) {
   const [dd, mm, yy] = ddMmYy.split('-')
@@ -58,6 +59,13 @@ export function Home() {
     onOpen: onOpenFormModal,
     onClose: onCloseFormModal,
   } = useDisclosure()
+
+  const {
+    isGuestMode,
+    isGuestModeModalOpen,
+    onCloseGuestModal,
+  } = useGuestModeModal()
+
   const navigate = useNavigate()
   const authContext = useAuth()
   const guestModeContext = useGuestMode()
@@ -195,6 +203,22 @@ export function Home() {
           )}
         </Box>
       </Modal>
+      {isGuestMode && (
+        <Modal
+          isOpen={isGuestModeModalOpen}
+          onClose={onCloseGuestModal}
+          title="Welcome to Sleep Tracker"
+        >
+          <VStack>
+            <Text>
+              Try out the app. Feel free to play around, the changes you make
+              will be scoped to this session. To save any changes you need to
+              register an account
+            </Text>
+            <Button onClick={onCloseGuestModal}>Lets go!</Button>
+          </VStack>
+        </Modal>
+      )}
     </Container>
   )
 }

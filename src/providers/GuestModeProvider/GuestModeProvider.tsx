@@ -6,6 +6,7 @@ import { useLocalStorage } from 'utils'
 type TGuestModeContext = GuestModeState & {
   enterGuestMode: () => void
   leaveGuestMode: () => void
+  setIsFirstTimeOpeningGuestMode: (value: boolean) => void
   setSleeps: (newSleeps: Sleep[]) => void
 }
 
@@ -16,6 +17,7 @@ type AuthProviderProps = {
 }
 export const GuestModeProvider = (props: AuthProviderProps) => {
   const [state, setState] = useLocalStorage<GuestModeState>('guest-mode', {
+    isFirstTimeOpeningGuestMode: true,
     isGuestMode: false,
     sleeps: MOCK_SLEEPS,
   })
@@ -32,6 +34,11 @@ export const GuestModeProvider = (props: AuthProviderProps) => {
         setState((prev) => ({
           ...prev,
           isGuestMode: false,
+        })),
+      setIsFirstTimeOpeningGuestMode: (value) =>
+        setState((prev) => ({
+          ...prev,
+          isFirstTimeOpeningGuestMode: value,
         })),
       setSleeps: (newSleeps) => {
         setState((prev) => ({
