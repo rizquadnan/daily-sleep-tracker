@@ -13,6 +13,7 @@ import {
 } from 'components/LoginRegisterForm'
 import { Link } from 'react-router-dom'
 import { useRegister } from './hooks'
+import { gradientBoxShadow } from 'assets/gradientBoxShadow'
 
 export function Register() {
   const { isSubmitting, handleRegister } = useRegister()
@@ -27,6 +28,7 @@ export function Register() {
           w="100%"
           maxW={pxToRem(480)}
           alignItems="strech"
+          {...gradientBoxShadow}
         >
           <Heading as="h1" textAlign="center">
             Register

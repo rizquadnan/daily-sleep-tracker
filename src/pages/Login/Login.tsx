@@ -6,6 +6,7 @@ import {
   Heading,
   VStack,
 } from '@chakra-ui/react'
+import { gradientBoxShadow } from 'assets/gradientBoxShadow'
 import { LoginRegisterForm, LoginRegisterFormVariant } from 'components'
 import { Link } from 'react-router-dom'
 import { pxToRem } from 'utils'
@@ -24,6 +25,7 @@ export function Login() {
           w="100%"
           maxW={pxToRem(480)}
           alignItems="strech"
+          {...gradientBoxShadow}
         >
           <Heading as="h1" textAlign="center">
             Login
