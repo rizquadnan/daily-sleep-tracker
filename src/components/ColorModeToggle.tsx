@@ -5,7 +5,7 @@ export function ColorModeToggle() {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <Flex justifyContent="flex-end" padding="24px">
+    <Flex justifyContent="flex-end" padding="24px" position="fixed" right="0">
       {colorMode === 'dark' ? (
         <IconButton
           aria-label="Change to light mode"
