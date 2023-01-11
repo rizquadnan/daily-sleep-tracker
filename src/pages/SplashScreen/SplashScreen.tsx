@@ -10,6 +10,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { getGradientBoxShadow } from 'assets/gradientBoxShadow'
+import { mobileSpacedBox } from 'assets/mobileSpacedBox'
 import { useGuestMode } from 'providers'
 import { Link, useNavigate } from 'react-router-dom'
 import { ROUTES } from 'routes'
@@ -31,12 +32,17 @@ export function SplashScreen() {
           maxW={pxToRem(480)}
           alignItems="strech"
           spacing="24px"
+          h={{ base: '73vh', md: 'initial' }}
+          position={{ base: 'relative', md: 'initial' }}
+          top={{ base: '2vh', md: 'initial' }}
+          justifyContent={{ base: 'space-around', md: 'initial' }}
+          {...mobileSpacedBox}
           {...getGradientBoxShadow(colorMode)}
         >
-          <Heading as="h1" textAlign="center">
-            Welcome to Daily Sleep Tracker
-          </Heading>
-          <VStack spacing="16px">
+          <VStack>
+            <Heading as="h1" textAlign="center">
+              Welcome to Daily Sleep Tracker
+            </Heading>
             <Box>
               <Text fontSize="15px" textAlign="center">
                 You can find out your daily sleep patterns here. Register to try
@@ -44,6 +50,8 @@ export function SplashScreen() {
                 Guest Mode!
               </Text>
             </Box>
+          </VStack>
+          <VStack spacing="16px">
             <ButtonGroup w="100%">
               <Button as={Link} to="/register" variant="outline" flex="1">
                 Register

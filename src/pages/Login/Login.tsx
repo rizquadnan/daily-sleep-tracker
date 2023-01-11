@@ -8,6 +8,7 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { getGradientBoxShadow } from 'assets/gradientBoxShadow'
+import { mobileSpacedBox } from 'assets/mobileSpacedBox'
 import { LoginRegisterForm, LoginRegisterFormVariant } from 'components'
 import { Link } from 'react-router-dom'
 import { pxToRem } from 'utils'
@@ -23,26 +24,29 @@ export function Login() {
       <Center minH="100vh">
         <VStack
           shadow="xl"
-          borderRadius="md"
           padding="6"
           w="100%"
+          spacing="0"
           maxW={pxToRem(480)}
           alignItems="strech"
+          {...mobileSpacedBox}
           {...getGradientBoxShadow(colorMode)}
         >
           <Heading as="h1" textAlign="center">
             Login
           </Heading>
-          <Box data-testid="form">
-            <LoginRegisterForm
-              isLoading={isSubmitting}
-              variant={LoginRegisterFormVariant.Login}
-              onSubmit={handleLogin}
-            />
-          </Box>
-          <Button as={Link} to="/" isDisabled={isSubmitting}>
-            Go Back
-          </Button>
+          <VStack alignItems="stretch">
+            <Box data-testid="form">
+              <LoginRegisterForm
+                isLoading={isSubmitting}
+                variant={LoginRegisterFormVariant.Login}
+                onSubmit={handleLogin}
+              />
+            </Box>
+            <Button as={Link} to="/" isDisabled={isSubmitting}>
+              Go Back
+            </Button>
+          </VStack>
         </VStack>
       </Center>
     </Container>
