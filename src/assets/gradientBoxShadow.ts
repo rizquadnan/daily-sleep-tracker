@@ -34,10 +34,13 @@ export const getGradientBoxShadow = (
     right: 0,
     bottom: 0,
     left: 0,
-    background: "linear-gradient(-45deg, #210cae 0%, #4dc9e6 100% )",
+    background:
+      colorMode === "dark"
+        ? "linear-gradient(-45deg, #210cae 0%, #4dc9e6 100% )"
+        : "linear-gradient(-45deg, #f76b1c 0%, #fad961 100% )",
     transform: "translate3d(0px, 30px, 0) scale(1.15)",
     filter: "blur(43px)",
-    opacity: 1,
+    opacity: 0.8,
     transition: "opacity 0.3s",
     borderRadius: "inherit",
   },
