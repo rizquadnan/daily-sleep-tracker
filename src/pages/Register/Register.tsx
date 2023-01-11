@@ -38,16 +38,18 @@ export function Register() {
           <Heading as="h1" textAlign="center">
             Register
           </Heading>
-          <Box data-testid="form">
-            <LoginRegisterForm
-              variant={LoginRegisterFormVariant.Register}
-              isLoading={isSubmitting}
-              onSubmit={handleRegister}
-            />
-          </Box>
-          <Button as={Link} to="/" isDisabled={isSubmitting}>
-            Go Back
-          </Button>
+          <VStack alignItems="stretch">
+            <Box data-testid="form">
+              <LoginRegisterForm
+                variant={LoginRegisterFormVariant.Register}
+                isLoading={isSubmitting}
+                onSubmit={handleRegister}
+              />
+            </Box>
+            <Button as={Link} to="/" isDisabled={isSubmitting}>
+              Go Back
+            </Button>
+          </VStack>
         </VStack>
       </Center>
     </Container>
