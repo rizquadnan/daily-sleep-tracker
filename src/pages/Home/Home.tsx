@@ -80,7 +80,7 @@ export function Home() {
     <Container maxW="container.xl">
       <VStack
         alignItems="stretch"
-        paddingTop="10rem"
+        paddingTop={{ base: '16vh', md: '10rem' }}
         paddingBottom={{ base: '4rem', md: '0' }}
         spacing="10"
       >
