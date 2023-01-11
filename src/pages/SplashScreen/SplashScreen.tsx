@@ -56,7 +56,7 @@ export function SplashScreen() {
               <Button
                 w="100%"
                 flex="1"
-                colorScheme="orange"
+                colorScheme="blue"
                 variant="outline"
                 onClick={() => {
                   guestModeContext.enterGuestMode()

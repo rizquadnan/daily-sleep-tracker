@@ -141,11 +141,7 @@ export function Home() {
         </Tabs>
 
         <VStack alignItems="stretch">
-          <Button
-            w="100%"
-            colorScheme="orange"
-            onClick={() => onOpenFormModal()}
-          >
+          <Button w="100%" colorScheme="blue" onClick={() => onOpenFormModal()}>
             New Entry
           </Button>
           {guestModeContext.isGuestMode ? (
