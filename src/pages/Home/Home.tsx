@@ -78,7 +78,12 @@ export function Home() {
 
   return (
     <Container maxW="container.xl">
-      <VStack alignItems="stretch" padding="10rem 0" spacing="10">
+      <VStack
+        alignItems="stretch"
+        paddingTop="10rem"
+        paddingBottom={{ base: '4rem', md: '0' }}
+        spacing="10"
+      >
         <Tabs isFitted isLazy>
           <TabList>
             <Tab>Table</Tab>
