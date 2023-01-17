@@ -27,7 +27,7 @@ import { useAuth, useGuestMode } from 'providers'
 import { ROUTES } from 'routes'
 import { useGuestModeModal, useSubmit } from './hooks'
 import { useMockSleeps } from 'api'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 export function toYYYYMMDD(ddMmYy: string) {
   const [dd, mm, yy] = ddMmYy.split('-')
@@ -60,6 +60,11 @@ export function Home() {
     onClose: onCloseFormModal,
   } = useDisclosure()
 
+  const [renderKey, setRenderKey] = useState(0)
+  const rerender = () => {
+    setRenderKey((prev) => prev + 1)
+  }
+
   const {
     isGuestMode,
     isGuestModeModalOpen,
@@ -72,6 +77,7 @@ export function Home() {
 
   const { isSubmitting, handleSubmit } = useSubmit({
     closeModalCallback: onCloseFormModal,
+    refetchSleeps: () => rerender(),
   })
 
   const { handleCreate: handleGuestModeSubmit } = useMockSleeps({})
@@ -97,7 +103,7 @@ export function Home() {
                 {guestModeContext.isGuestMode ? (
                   <TableGuestModeContainer />
                 ) : (
-                  <TableContainer />
+                  <TableContainer key={renderKey} />
                 )}
               </TabPanelContentWrapper>
             </TabPanel>
@@ -110,7 +116,7 @@ export function Home() {
                 {guestModeContext.isGuestMode ? (
                   <ChartGuestModeContainer />
                 ) : (
-                  <ChartContainer />
+                  <ChartContainer key={renderKey} />
                 )}
               </TabPanelContentWrapper>
             </TabPanel>
@@ -130,14 +136,14 @@ export function Home() {
                   {guestModeContext.isGuestMode ? (
                     <ChartGuestModeContainer />
                   ) : (
-                    <ChartContainer />
+                    <ChartContainer key={renderKey} />
                   )}
                 </TabPanelContentWrapper>
                 <TabPanelContentWrapper minH="300px" minW="300px" flex="1">
                   {guestModeContext.isGuestMode ? (
                     <TableGuestModeContainer />
                   ) : (
-                    <TableContainer />
+                    <TableContainer key={renderKey} />
                   )}
                 </TabPanelContentWrapper>
               </Stack>
