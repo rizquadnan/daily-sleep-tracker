@@ -18,7 +18,7 @@ function getMM(minutes: number) {
 }
 
 function minutesToHHMM(minutes: number) {
-  const HH = getHH(minutes) < 10 ? `0${getHH(minutes)}` : getHH(minutes) < 10
+  const HH = getHH(minutes) < 10 ? `0${getHH(minutes)}` : getHH(minutes)
   const MM = getMM(minutes) < 10 ? `0${getMM(minutes)}` : getMM(minutes)
 
   return `${HH}:${MM}`
